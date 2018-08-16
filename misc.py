@@ -19,7 +19,7 @@ from ConfigParser import ConfigParser
 from platform import platform
 from logging import getLogger, config
 
-from errors import BadSettings
+from errors import BadSettings, InvalidScampConfiguration
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
@@ -133,12 +133,17 @@ def create_scamp_dict(conf_num):
     for conf in configurations:
         temp_list = [conf[0], conf[1], conf[2], conf[3]]
         scamp_list.append(temp_list)
-    scamp_dict = {'crossid_radius': scamp_list[conf_num][0],
-                  'pixscale_maxerr': scamp_list[conf_num][1],
-                  'posangle_maxerr': scamp_list[conf_num][2],
-                  'position_maxerr': scamp_list[conf_num][3]}
+
+    try:
+        scamp_dict = {'crossid_radius': scamp_list[conf_num][0],
+                      'pixscale_maxerr': scamp_list[conf_num][1],
+                      'posangle_maxerr': scamp_list[conf_num][2],
+                      'position_maxerr': scamp_list[conf_num][3]}
+    except IndexError:
+        raise InvalidScampConfiguration
 
     return scamp_dict, len_conf
+
 
 
 def setting_logger(prfs_d, logger_name):
