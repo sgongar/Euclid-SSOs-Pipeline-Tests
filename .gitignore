@@ -1,0 +1,21 @@
+### Byte-compiled / optimized / DLL files ###
+__pycache__/
+pipeline/__pycache__/
+*.py[cod]
+*$py.class
+
+### logs & tests ###
+install.txt
+
+### Trial tests ###
+tests/_trial_temp/*
+
+### Temporal ###
+pipeline/tmp/*.csv
+pipeline/tmp/*.reg
+*.cmake
+
+### Plots ###
+pipeline/plots/*
+performance/output/*
+.Rproj.user

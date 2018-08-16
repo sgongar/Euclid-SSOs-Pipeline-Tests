@@ -1,0 +1,3 @@
+[report]
+include = /home/travis/build/sgongar/Euclid-SSOs-Pipeline/pipeline/*
+omit = /home/travis/virtualenv/*
