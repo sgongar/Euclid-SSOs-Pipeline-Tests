@@ -1,10 +1,11 @@
+[![Build Status](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests.svg?branch=master)](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests)
+
 ## Performance module
 
 #### To-do
-- [ ] Implement not detected catalogue for SSOs. 
+- [ ] Implement not detected catalogue for SSOs.
 - [ ] Implement not detected catalogue for stars.
 - [ ] Implement not detected catalogue for galaxies.
-
 
 #### Files
 

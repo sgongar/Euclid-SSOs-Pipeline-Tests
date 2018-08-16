@@ -7,9 +7,9 @@ branches:
 install:
   - pip install coveralls
   - pip install coverage
-  - pip install -r pipeline/requirements.txt
+  - pip install -r requirements.txt
 script:
-  - cd pipeline/tests
+  - cd tests
   - nosetests test_miscCreateSextractorDict.py
   - nosetests test_miscCreateScampDict.py
   - nosetests test_miscExtractSettingsElvis.py
