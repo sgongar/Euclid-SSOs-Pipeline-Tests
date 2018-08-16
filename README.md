@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests.svg?branch=master)](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests)
+[![Build Status](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests.svg?branch=master)](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests) [![Coverage Status](https://coveralls.io/repos/github/sgongar/Euclid-SSOs-Pipeline-Tests/badge.svg?branch=master)](https://coveralls.io/github/sgongar/Euclid-SSOs-Pipeline-Tests?branch=master)
 
 ## Performance module
 

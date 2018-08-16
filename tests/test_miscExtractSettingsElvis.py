@@ -157,6 +157,7 @@ class TestExtractSettingsElvis(TestCase):
                        "pm_low: 0.0005\n"
                        "pm_up: 30\n"
                        "pm_sn: 2\n"
+                       "pms: 0.01,0.03,0.1,0.3,1.0,3.0,10.0,30.0\n"
                        "confidences: 5\n"
                        "r_fit: 0.90\n"
                        "cores_number: 10\n"
