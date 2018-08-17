@@ -9,6 +9,8 @@ Todo:
 """
 from os import listdir
 
+from pandas import read_csv
+
 from misc import extract_settings_elvis
 
 
@@ -93,3 +95,24 @@ def get_cats(dither):
             list_out.append(cat_)
 
     return list_out
+
+
+def gets_data():
+    """ Creates an input dictionary. Each key contains SSOs' information
+    for each dither.
+
+    :return: input_dict
+    """
+    # # For now we only have data for dither 1
+    input_df = {1: {}, 2: {}, 3: {}, 4: {}}
+
+    for key_ in input_df.keys():
+        # Uses clean ones instead total ones
+        ssos_cat = 'catalogues_input/cat_clean_ssos_{}.csv'.format(key_)
+        input_df[key_]['SSOs'] = read_csv(ssos_cat, index_col=0)
+        stars_cat = 'catalogues_detected/stars.csv'
+        input_df[key_]['stars'] = read_csv(stars_cat, index_col=0)
+        galaxies_cat = 'catalogues_detected/galaxies.csv'
+        input_df[key_]['galaxies'] = read_csv(galaxies_cat, index_col=0)
+
+    return input_df

@@ -15,6 +15,7 @@ Todo:
 """
 
 from misc import extract_settings_elvis, check_source, setting_logger
+from misc_cats import gets_data
 
 from numpy import nan
 from pandas import concat, DataFrame, read_csv, Series
@@ -27,27 +28,6 @@ __version__ = "0.1"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
-
-
-def gets_data():
-    """ Creates an input dictionary. Each key contains SSOs' information
-    for each dither.
-
-    :return: input_dict
-    """
-    # # For now we only have data for dither 1
-    input_df = {1: {}, 2: {}, 3: {}, 4: {}}
-
-    for key_ in input_df.keys():
-        # Uses clean ones instead total ones
-        ssos_cat = 'catalogues_input/cat_clean_ssos_{}.csv'.format(key_)
-        input_df[key_]['SSOs'] = read_csv(ssos_cat, index_col=0)
-        stars_cat = 'catalogues_detected/stars.csv'
-        input_df[key_]['stars'] = read_csv(stars_cat, index_col=0)
-        galaxies_cat = 'catalogues_detected/galaxies.csv'
-        input_df[key_]['galaxies'] = read_csv(galaxies_cat, index_col=0)
-
-    return input_df
 
 
 def compute_factors(factors_d, stats_df):
