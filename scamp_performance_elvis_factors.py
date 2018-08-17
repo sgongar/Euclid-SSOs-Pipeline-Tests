@@ -418,6 +418,9 @@ class FactorsScampPerformance:
         false_positives = {1: {'RA': [], 'DEC': []}, 2: {'RA': [], 'DEC': []},
                            3: {'RA': [], 'DEC': []}, 4: {'RA': [], 'DEC': []}}
 
+        yey = 0
+        nop = 0
+
         print('Creating new catalogues from filtered catalogue due type')
         print('Unique sources: {}'.format(len(unique_sources)))
         for idx_source_, source_ in enumerate(unique_sources):
@@ -451,11 +454,13 @@ class FactorsScampPerformance:
                 i_mag_bin = get_norm_mag(source_d['mag'][0])
                 i_pm_norm = get_norm_speed(source_d['pm'][0])
                 if i_mag_bin == '23-24' and i_pm_norm == 1.0:
-                    print('yey')
+                    yey += 1
+                    print('yey {}'.format(yey))
                 self.data_d[i_mag_bin][i_pm_norm]['right'] += 1
             else:
                 if o_mag_bin == '23-24' and o_pm_norm == 1.0:
-                    print('nop')
+                    nop += 1
+                    print('nop {}'.format(nop))
                 self.data_d[o_mag_bin][o_pm_norm]['false'] += 1
 
         for dither_ in false_positives.keys():
