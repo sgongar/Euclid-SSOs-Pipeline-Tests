@@ -1,67 +1,10 @@
-[![Build Status](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests.svg?branch=master)](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests) [![Coverage Status](https://coveralls.io/repos/github/sgongar/Euclid-SSOs-Pipeline-Tests/badge.svg?branch=master)](https://coveralls.io/github/sgongar/Euclid-SSOs-Pipeline-Tests?branch=master)
+[![Build Status](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests.svg?branch=master)](https://travis-ci.org/sgongar/Euclid-SSOs-Pipeline-Tests) [![Coverage Status](https://coveralls.io/repos/github/sgongar/Euclid-SSOs-Pipeline-Tests/badge.svg?branch=master)](https://coveralls.io/github/sgongar/Euclid-SSOs-Pipeline-Tests?branch=master) [![Code Health](https://landscape.io/github/sgongar/Euclid-SSOs-Pipeline-Tests/master/landscape.svg?style=flat)](https://landscape.io/github/sgongar/Euclid-SSOs-Pipeline-Tests/master)
 
 ## Performance module
+Utilities created to check pipeline behaviour. Using these scripts pipeline performance can be validated through a collection of output catalogues and regions. These catalogues show us the objects detected (or not), organised by source type. For each catalogue there is a region file intended to be use in DS9.
 
 #### To-do
 - [ ] Implement not detected catalogue for SSOs.
 - [ ] Implement not detected catalogue for stars.
 - [ ] Implement not detected catalogue for galaxies.
-
-#### Files
-
-##### catalog_creation_factors
-
-##### catalog_creation_galaxies
-Creates a catalog populated of galaxies from sextracted catalogs
-of single CCDs images.
-
-##### catalog_creation_ssos
-
-##### catalog_creation_stars
-Creates a catalog populated of stars from sextracted catalogs
-of single CCDs images.
-
-##### errors
-
-##### images_management_elvis
-
-##### misc
-
-##### misc_cats
-Utilities for search and
-
-##### misc_fits
-Utilities for search and
-
-##### performance
-
-##### pm_performance_ssos
-
-##### README.md
-This readme file.
-
-##### regions
-
-##### regions_creations_ssos
-
-##### scamp_performance_elvis_factors
-
-##### scamp_performance_elvis_galaxies
-
-##### scamp_performance_elvis_lost_ssos
-
-##### scamp_performance_elvis_ssos
-
-##### scamp_performance_elvis_stars
-
-##### scamp_performance_elvis_values
-
-##### scamp_performance_luca_ssos
-
-##### scamp_performance_luca_total
-
-##### sextractor_performance_luca
-
-##### speeds_test
-
-##### ssos_dither_duplication
+- [ ] Increment coverage to ninety percent.

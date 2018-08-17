@@ -40,11 +40,11 @@ def gets_data():
 
     for key_ in input_df.keys():
         # Uses clean ones instead total ones
-        ssos_cat = 'cats/cat_clean_ssos_{}.csv'.format(key_)
+        ssos_cat = 'catalogues_input/cat_clean_ssos_{}.csv'.format(key_)
         input_df[key_]['SSOs'] = read_csv(ssos_cat, index_col=0)
-        stars_cat = 'tmp_stars/stars.csv'
+        stars_cat = 'catalogues_detected/stars.csv'
         input_df[key_]['stars'] = read_csv(stars_cat, index_col=0)
-        galaxies_cat = 'tmp_galaxies/galaxies.csv'
+        galaxies_cat = 'catalogues_detected/galaxies.csv'
         input_df[key_]['galaxies'] = read_csv(galaxies_cat, index_col=0)
 
     return input_df
