@@ -453,12 +453,12 @@ class FactorsScampPerformance:
             if right_detections >= 3:
                 i_mag_bin = get_norm_mag(source_d['mag'][0])
                 i_pm_norm = get_norm_speed(source_d['pm'][0])
-                if i_mag_bin == '23-24' and i_pm_norm == 1.0:
+                if i_mag_bin == '24-25' and i_pm_norm == 1.0:
                     yey += 1
                     print('yey {}'.format(yey))
                 self.data_d[i_mag_bin][i_pm_norm]['right'] += 1
             else:
-                if o_mag_bin == '23-24' and o_pm_norm == 1.0:
+                if o_mag_bin == '24-25' and o_pm_norm == 1.0:
                     nop += 1
                     print('nop {}'.format(nop))
                 self.data_d[o_mag_bin][o_pm_norm]['false'] += 1
