@@ -444,7 +444,6 @@ class FactorsScampPerformance:
                     source_d['pm'].append(pm_norm)  # order by input not output
                     source_d['mag'].append(test_sso['ABMAG'].iloc[0])
                 else:
-                    print('pm_norm {}'.format(pm_norm))
                     false_positives[dither_n]['RA'].append(alpha)
                     false_positives[dither_n]['DEC'].append(delta)
 
