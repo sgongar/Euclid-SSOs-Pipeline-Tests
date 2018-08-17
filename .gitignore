@@ -11,10 +11,10 @@ tests/_trial_temp/*
 catalogues_detected/*.csv
 catalogues_input/*.csv
 
+### Regions ###
+false_positives/regions/*.reg
+
 ### Temporal ###
 tmp_galaxies/*.csv
 tmp_stars/*.csv
 
-### Plots ###
-pipeline/plots/*
-performance/output/*
