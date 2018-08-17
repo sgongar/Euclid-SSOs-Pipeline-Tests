@@ -451,7 +451,7 @@ class FactorsScampPerformance:
             delta_serie = Series(delta_list, name='DELTA_J2000')
 
             output = concat([alpha_serie, delta_serie], axis=1)
-            cat_name = 'false_positives/false_{}.reg'.format(dither_)
+            cat_name = 'false_positives/regions/false_{}.reg'.format(dither_)
             output.to_csv(cat_name, index=False, header=False, sep=" ")
 
         mags = [[14, 15], [15, 16], [16, 17], [17, 18], [18, 19],
