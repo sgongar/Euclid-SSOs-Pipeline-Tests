@@ -4,18 +4,17 @@ pipeline/__pycache__/
 *.py[cod]
 *$py.class
 
-### logs & tests ###
-install.txt
-
 ### Trial tests ###
 tests/_trial_temp/*
 
+### Catalogues ###
+catalogues_detected/*.csv
+catalogues_input/*.csv
+
 ### Temporal ###
-pipeline/tmp/*.csv
-pipeline/tmp/*.reg
-*.cmake
+tmp_galaxies/*.csv
+tmp_stars/*.csv
 
 ### Plots ###
 pipeline/plots/*
 performance/output/*
-.Rproj.user
