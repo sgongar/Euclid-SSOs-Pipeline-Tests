@@ -430,7 +430,7 @@ class FactorsScampPerformance:
                     false_positives[dither_n]['RA'].append(alpha)
                     false_positives[dither_n]['DEC'].append(delta)
 
-            if right_detections >= 3:
+            if right_detections >= 4:
                 i_mag_bin = get_norm_mag(source_d['mag'][0])
                 i_pm_norm = get_norm_speed(source_d['pm'][0])
                 if i_mag_bin == '24-25' and i_pm_norm == 1.0:
