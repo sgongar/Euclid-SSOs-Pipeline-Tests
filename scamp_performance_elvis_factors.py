@@ -454,7 +454,7 @@ class FactorsScampPerformance:
                     print('yey')
                 self.data_d[i_mag_bin][i_pm_norm]['right'] += 1
             else:
-                if i_mag_bin == '23-24' and i_pm_norm == 1.0:
+                if o_mag_bin == '23-24' and o_pm_norm == 1.0:
                     print('nop')
                 self.data_d[o_mag_bin][o_pm_norm]['false'] += 1
 
