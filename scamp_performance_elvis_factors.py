@@ -444,16 +444,19 @@ class FactorsScampPerformance:
                     source_d['pm'].append(pm_norm)  # order by input not output
                     source_d['mag'].append(test_sso['ABMAG'].iloc[0])
                 else:
+                    print('pm_norm {}'.format(pm_norm))
                     false_positives[dither_n]['RA'].append(alpha)
                     false_positives[dither_n]['DEC'].append(delta)
 
             if right_detections >= 3:
                 i_mag_bin = get_norm_mag(source_d['mag'][0])
                 i_pm_norm = get_norm_speed(source_d['pm'][0])
-                # if i_mag_bin == '23-24' and i_pm_norm == 1.0:
-                #     print('yey')
+                if i_mag_bin == '23-24' and i_pm_norm == 1.0:
+                    print('yey')
                 self.data_d[i_mag_bin][i_pm_norm]['right'] += 1
             else:
+                if i_mag_bin == '23-24' and i_pm_norm == 1.0:
+                    print('nop')
                 self.data_d[o_mag_bin][o_pm_norm]['false'] += 1
 
         for dither_ in false_positives.keys():
