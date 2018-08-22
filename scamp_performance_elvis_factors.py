@@ -15,6 +15,7 @@ Todo:
 """
 
 from misc import extract_settings_elvis, check_source, setting_logger
+from misc import get_norm_speed
 from misc_cats import gets_data
 
 from numpy import nan
@@ -153,28 +154,6 @@ def get_dither(catalog_n):
 
     return dither_n
 
-
-def get_norm_speed(o_pm):
-    """
-
-    :return:
-    """
-    speeds_d = {0.01: [0.005, 0.015], 0.03: [0.015, 0.05],
-                0.1: [0.05, 0.15], 0.3: [0.15, 0.5],
-                1.0: [0.5, 1.5], 3.0: [1.5, 5],
-                10.0: [5.0, 15.0], 30.0: [15.0, 50]}
-
-    if o_pm < 0.005:
-        pm_norm = 0
-    else:
-        # pm_norm = 0
-        for key_ in speeds_d.keys():
-            low = speeds_d[key_][0]
-            high = speeds_d[key_][1]
-            if low < o_pm <= high:
-                pm_norm = key_
-
-    return pm_norm
 
 
 def get_norm_mag(o_mag):
