@@ -187,6 +187,8 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df, full_d):
                 index = check_distance(o_df, alpha, delta)
                 o_df = o_df.iloc[[index]]
 
+                print(o_df.columns)
+
                 source_d['DITHER'].append(dither)
 
                 catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
