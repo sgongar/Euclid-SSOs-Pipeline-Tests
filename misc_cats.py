@@ -205,6 +205,7 @@ def extract_ssos_df():
                         delim_whitespace=True)
     ssos_source = range(0, cat_ssos['RA'].size, 1)
     cat_ssos['SOURCE'] = ssos_source
+    print(cat_ssos.columns)
     ssos_df = cat_ssos
 
     return ssos_df
