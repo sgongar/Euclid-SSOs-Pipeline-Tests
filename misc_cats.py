@@ -9,7 +9,9 @@ Todo:
 """
 from os import listdir
 
-from pandas import read_csv
+from astropy.io import fits
+from astropy.table import Table
+from pandas import concat, read_csv
 
 from misc import extract_settings_elvis
 
@@ -116,3 +118,46 @@ def gets_data():
         input_df[key_]['galaxies'] = read_csv(galaxies_cat, index_col=0)
 
     return input_df
+
+
+def extract_cats_d():
+    """
+
+    :return:
+    """
+    cats_d = {}
+    prfs_dict = extract_settings_elvis()
+    for dither in range(1, 5, 1):
+        cats_d[dither] = {}
+        cats = get_cats(dither)
+        for cat_name in cats:
+            hdu_list = fits.open('{}/{}'.format(prfs_dict['fits_dir'],
+                                                cat_name))
+            cat_data = Table(hdu_list[2].data)
+            cat_df = cat_data.to_pandas()  # Converts to Pandas format
+            cat_number = get_cat(cat_name)  # Gets cat's number from cat's name
+            cats_d[dither][cat_name] = cat_df
+
+            cat_list = [cat_number] * cat_df['NUMBER'].size
+            cats_d[dither][cat_name]['CATALOG_NUMBER'] = cat_list
+
+    return cats_d
+
+
+def create_full_cats(cats_d):
+    """
+
+    :param cats_d:
+    :return:
+    """
+    full_d = {}
+
+    for dither in range(1, 5, 1):
+        dither_l = []
+        for key_ in cats_d[dither].keys():
+            dither_l.append(cats_d[dither][key_])
+        full_d[dither] = concat(dither_l, ignore_index=True)
+        full_idx = range(0, full_d[dither]['NUMBER'].size, 1)
+        full_d[dither]['IDX'] = full_idx
+
+    return full_d

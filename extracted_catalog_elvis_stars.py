@@ -13,16 +13,14 @@ Versions:
 - 0.5: Now can saves catalogues by dither.
 
 Information:
-- cat: -> hdu_list catalogue
-- data: -> Table formatted data
-- df: -> dataframe formatted data
+-
 
 Todo:
     * Get out columns definition. Too long for a single function.
-    * Creates units tests.
     * Improve variable nomenclature.
     * Explanations are still not so easy to understand.
     * POO implementation?
+    * Unit testing.
 
 *GNU Terry Pratchett*
 """
@@ -33,7 +31,7 @@ from astropy.io import fits
 from astropy.table import Table
 from pandas import concat, DataFrame, read_csv
 
-from misc_cats import get_cat, get_cats
+from misc_cats import extract_cats_d, create_full_cats
 from misc import extract_settings_elvis, check_distance, check_source
 
 __author__ = "Samuel Góngora García"
@@ -43,48 +41,6 @@ __version__ = "0.5"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
-
-
-def extract_cats_d():
-    """
-
-    :return:
-    """
-    cats_d = {}
-    for dither in range(1, 5, 1):
-        cats_d[dither] = {}
-        cats = get_cats(dither)
-        for cat_name in cats:
-            hdu_list = fits.open('{}/{}'.format(prfs_dict['fits_dir'],
-                                                cat_name))
-            cat_data = Table(hdu_list[2].data)
-            cat_df = cat_data.to_pandas()  # Converts to Pandas format
-            cat_number = get_cat(cat_name)  # Gets cat's number from cat's name
-            cats_d[dither][cat_name] = cat_df
-
-            cat_list = [cat_number] * cat_df['NUMBER'].size
-            cats_d[dither][cat_name]['CATALOG_NUMBER'] = cat_list
-
-    return cats_d
-
-
-def create_full_cats(cats_d):
-    """
-
-    :param cats_d:
-    :return:
-    """
-    full_d = {}
-
-    for dither in range(1, 5, 1):
-        dither_l = []
-        for key_ in cats_d[dither].keys():
-            dither_l.append(cats_d[dither][key_])
-        full_d[dither] = concat(dither_l, ignore_index=True)
-        full_idx = range(0, full_d[dither]['NUMBER'].size, 1)
-        full_d[dither]['IDX'] = full_idx
-
-    return full_d
 
 
 def extract_stars_df():
@@ -108,8 +64,9 @@ def create_empty_catalog_dict():
     :return: cat_d
     """
     cat_d = {'DITHER': [], 'CATALOG_NUMBER': [], 'X_WORLD': [], 'Y_WORLD': [],
-             'MAG_AUTO': [], 'MAGERR_AUTO': [], 'ERRA_WORLD': [],
-             'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
+             'MAG_AUTO': [], 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
+             'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
+             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
 
     return cat_d
 
@@ -123,8 +80,6 @@ def create_catalog():
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
     stars_df = extract_stars_df()
     save = True
-
-    print(stars_df['IDX'])  # todo check!
 
     unique_sources = stars_df['IDX']
     total_stars = stars_df['IDX'].size
@@ -215,6 +170,18 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
                 magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
                 source_d['MAGERR_AUTO'].append(magerr_auto)
 
+                b_image = float(o_df['B_IMAGE'].iloc[0])
+                source_d['B_IMAGE'].append(b_image)
+
+                theta_image = float(o_df['THETA_IMAGE'].iloc[0])
+                source_d['THETA_IMAGE'].append(theta_image)
+
+                erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
+                source_d['ERRA_IMAGE'].append(erra_image)
+
+                errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
+                source_d['ERRB_IMAGE'].append(errb_image)
+
                 erra_world = float(o_df['ERRA_WORLD'].iloc[0])
                 source_d['ERRA_WORLD'].append(erra_world)
 
@@ -229,10 +196,12 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
                 for value_ in source_d[key_]:
                     cat_d[key_].append(value_)
 
-    cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER', 'X_WORLD',
-                                       'Y_WORLD', 'MAG_AUTO', 'MAGERR_AUTO',
-                                       'ERRA_WORLD', 'ERRB_WORLD',
-                                       'ERRTHETA_WORLD'])
+    cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER',
+                                       'X_WORLD', 'Y_WORLD', 'MAG_AUTO',
+                                       'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
+                                       'THETA_IMAGE', 'ERRA_IMAGE',
+                                       'ERRB_IMAGE', 'ERRA_WORLD',
+                                       'ERRB_WORLD', 'ERRTHETA_WORLD'])
     if save:
         cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
 
