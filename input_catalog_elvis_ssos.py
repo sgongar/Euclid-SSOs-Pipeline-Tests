@@ -21,10 +21,11 @@ from math import cos, sin
 from astropy.units import degree
 from astropy.coordinates import SkyCoord
 from numpy import pi
-from pandas import concat, DataFrame, read_csv, Series
+from pandas import DataFrame
 
 from images_management_elvis import get_borders
 from misc import extract_settings_elvis
+from misc_cats import extract_ssos_df
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
@@ -44,36 +45,6 @@ def create_empty_catalog_dict():
              'DEC': [], 'VEL': [], 'ABMAG': [], 'THETA': []}
 
     return cat_d
-
-
-def extract_ssos_df():
-    """
-
-    :return:
-    """
-    # columns = ['ALPHA_J2000', 'DELTA_J2000', 'PM', 'PA',
-    #            'MAG', 'MAG', 'MAG', 'MAG']
-    # TODO actual catalogues is only valid for dither -> 1
-    # TODO create catalogues for dithers 2, 3 and 4
-    # cat_ssos = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
-    #                     delim_whitespace=True, header=None, names=columns)
-
-    cat_ssos = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
-                        delim_whitespace=True)
-    ssos_source = range(0, cat_ssos['RA'].size, 1)
-    cat_ssos['SOURCE'] = ssos_source
-    ssos_df = cat_ssos
-    # ssos_df = cat_ssos[['SOURCE', 'ALPHA_J2000', 'DELTA_J2000',
-    #                    'PM', 'PA', 'MAG']]
-
-    # Hasta aqui bien
-    alpha_list = Series(ssos_df['RA'].tolist(), name='ALPHA_J2000')
-    delta_list = Series(ssos_df['DEC'].tolist(), name='DELTA_J2000')
-
-    positions_table = concat([alpha_list, delta_list], axis=1)
-    positions_table.to_csv('test_1.reg', index=False, header=False, sep=" ")
-
-    return ssos_df
 
 
 def propagate_dithers():
@@ -176,16 +147,14 @@ def filter_by_position(sso_df):
                 if comp:
                     right_sources.append(row.IDX)
 
-    if save:
-        sso_df.to_csv('catalogues_input/cat_ssos.csv')
+    sso_df.to_csv('catalogues_input/cat_ssos.csv')
     for dither_ in range(1, 5, 1):
         catalog = sso_df[sso_df['DITHER'].isin([dither_])]
         catalog.to_csv('catalogues_input/cat_ssos_{}.csv'.format(dither_))
 
     # Removes non visible sources
     sso_clean_df = sso_df[sso_df['IDX'].isin(right_sources)]
-    if save:
-        sso_clean_df.to_csv('catalogues_input/cat_clean_ssos.csv')
+    sso_clean_df.to_csv('catalogues_input/cat_clean_ssos.csv')
     for dither_ in range(1, 5, 1):
         clean_catalog = sso_clean_df[sso_clean_df['DITHER'].isin([dither_])]
         clean_catalog.to_csv('catalogues_input/cat_clean_ssos_{}.csv'.format(dither_))

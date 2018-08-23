@@ -193,3 +193,18 @@ def extract_galaxies_df():
     galaxies_df['IDX'] = galaxies_idx
 
     return galaxies_df
+
+
+def extract_ssos_df():
+    """
+
+    :return:
+    """
+    prfs_dict = extract_settings_elvis()
+    cat_ssos = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
+                        delim_whitespace=True)
+    ssos_source = range(0, cat_ssos['RA'].size, 1)
+    cat_ssos['SOURCE'] = ssos_source
+    ssos_df = cat_ssos
+
+    return ssos_df

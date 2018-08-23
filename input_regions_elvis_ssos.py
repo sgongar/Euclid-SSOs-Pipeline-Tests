@@ -25,6 +25,7 @@ from pandas import concat, DataFrame, read_csv, Series
 
 from images_management_elvis import get_borders
 from misc import extract_settings_elvis
+from misc_cats import extract_ssos_df
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
@@ -40,33 +41,9 @@ def create_empty_catalog_dict():
 
     :return: cat_d
     """
-    cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [],
-             'DEC': [], 'VEL': [], 'ABMAG': [], 'THETA': []}
+    cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [], 'DEC': []}
 
     return cat_d
-
-
-def extract_ssos_df():
-    """
-
-    :return:
-    """
-    # columns = ['ALPHA_J2000', 'DELTA_J2000', 'PM', 'PA',
-    #            'MAG', 'MAG', 'MAG', 'MAG']
-    # TODO actual catalogues is only valid for dither -> 1
-    # TODO create catalogues for dithers 2, 3 and 4
-    # cat_ssos = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
-    #                     delim_whitespace=True, header=None, names=columns)
-
-    cat_ssos = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
-                        delim_whitespace=True)
-    ssos_source = range(0, cat_ssos['RA'].size, 1)
-    cat_ssos['SOURCE'] = ssos_source
-    ssos_df = cat_ssos
-    # ssos_df = cat_ssos[['SOURCE', 'ALPHA_J2000', 'DELTA_J2000',
-    #                    'PM', 'PA', 'MAG']]
-
-    return ssos_df
 
 
 def propagate_dithers():
@@ -87,12 +64,9 @@ def propagate_dithers():
         ssos_d['SOURCE'].append(idx_source)
         dither_source = 1
         ssos_d['DITHER'].append(dither_source)
+
         pm_source = source_df['VEL'].iloc[0]
-        ssos_d['VEL'].append(pm_source)
         pa_source = source_df['THETA'].iloc[0]
-        ssos_d['THETA'].append(pa_source)
-        mag_source = source_df['ABMAG'].iloc[0]
-        ssos_d['ABMAG'].append(mag_source)
 
         dither_time = (565.0 / 2) / 3600.0
         alpha_source = source_df['RA'].iloc[0]
@@ -125,9 +99,6 @@ def propagate_dithers():
             ssos_d['DITHER'].append(dither_source)
             ssos_d['RA'].append(alpha_source)
             ssos_d['DEC'].append(delta_source)
-            ssos_d['VEL'].append(pm_source)
-            ssos_d['THETA'].append(pa_source)
-            ssos_d['ABMAG'].append(mag_source)
 
         idx += 1
 
