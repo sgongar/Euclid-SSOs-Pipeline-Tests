@@ -13,13 +13,11 @@ Versions:
 - 0.5: Now can saves catalogues by dither.
 
 Information:
-- cat: -> hdu_list catalogue
-- data: -> Table formatted data
-- df: -> dataframe formatted data
+-
 
 Todo:
     * Get out columns definition. Too long for a single function.
-    * Creates units tests.
+    * Unit testing.
     * Improve variable nomenclature.
     * Explanations are still not so easy to understand.
     * POO implementation?
@@ -29,11 +27,9 @@ Todo:
 from multiprocessing import Process
 from sys import stdout
 
-from astropy.io import fits
-from astropy.table import Table
 from pandas import concat, DataFrame, read_csv
 
-from misc_cats import extract_cats_d, create_full_cats
+from misc_cats import extract_cats_d, create_full_cats, extract_stars_df
 from misc import extract_settings_elvis, check_distance, check_source
 
 __author__ = "Samuel Góngora García"
@@ -43,21 +39,6 @@ __version__ = "0.5"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
-
-
-def extract_stars_df():
-    """
-
-    :return:
-    """
-    cat_stars_loc = prfs_dict['references']
-    cat_stars = fits.open('{}/cat_stars.fits'.format(cat_stars_loc))
-    stars_data = Table(cat_stars[1].data)
-    stars_df = stars_data.to_pandas()
-    stars_idx = range(0, 28474, 1)  # hardcoded - todo!
-    stars_df['IDX'] = stars_idx
-
-    return stars_df
 
 
 def create_empty_catalog_dict():

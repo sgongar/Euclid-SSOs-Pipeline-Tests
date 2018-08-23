@@ -161,3 +161,35 @@ def create_full_cats(cats_d):
         full_d[dither]['IDX'] = full_idx
 
     return full_d
+
+
+def extract_stars_df():
+    """
+
+    :return:
+    """
+    prfs_dict = extract_settings_elvis()
+    cat_stars_loc = prfs_dict['references']
+    cat_stars = fits.open('{}/cat_stars.fits'.format(cat_stars_loc))
+    stars_data = Table(cat_stars[1].data)
+    stars_df = stars_data.to_pandas()
+    stars_idx = range(0, 28474, 1)  # hardcoded - todo!
+    stars_df['IDX'] = stars_idx
+
+    return stars_df
+
+
+def extract_galaxies_df():
+    """
+
+    :return:
+    """
+    prfs_dict = extract_settings_elvis()
+    cat_galaxies_loc = prfs_dict['references']
+    cat_galaxies = fits.open('{}/cat_galaxies.fits'.format(cat_galaxies_loc))
+    galaxies_data = Table(cat_galaxies[1].data)
+    galaxies_df = galaxies_data.to_pandas()
+    galaxies_idx = range(0, 143766, 1)
+    galaxies_df['IDX'] = galaxies_idx
+
+    return galaxies_df

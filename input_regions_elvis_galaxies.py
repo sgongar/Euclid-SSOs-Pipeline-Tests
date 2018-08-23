@@ -16,11 +16,10 @@ Todo:
 
 *GNU Terry Pratchett*
 """
-from astropy.io import fits
-from astropy.table import Table
 from pandas import concat
 
 from misc import extract_settings_elvis
+from misc_cats import extract_galaxies_df
 
 
 __author__ = "Samuel Góngora García"
@@ -30,21 +29,6 @@ __version__ = "0.1"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
-
-
-def extract_galaxies_df():
-    """
-
-    :return:
-    """
-    cat_galaxies_loc = prfs_dict['references']
-    cat_galaxies = fits.open('{}/cat_galaxies.fits'.format(cat_galaxies_loc))
-    galaxies_data = Table(cat_galaxies[1].data)
-    galaxies_df = galaxies_data.to_pandas()
-    galaxies_idx = range(0, 143766, 1)
-    galaxies_df['IDX'] = galaxies_idx
-
-    return galaxies_df
 
 
 def create_catalog():
