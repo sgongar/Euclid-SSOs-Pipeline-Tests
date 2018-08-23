@@ -205,7 +205,10 @@ def extract_ssos_df():
                         delim_whitespace=True)
     ssos_source = range(0, cat_ssos['RA'].size, 1)
     cat_ssos['SOURCE'] = ssos_source
-    print(cat_ssos.columns)
+
+    for key_ in ['RA', 'DEC', 'VEL', 'THETA', 'ABMAG', 'H', 'J', 'Y', 'SOURCE']:
+        print(cat_ssos[key_], cat_ssos[key_].size)
+
     ssos_df = cat_ssos
 
     return ssos_df
