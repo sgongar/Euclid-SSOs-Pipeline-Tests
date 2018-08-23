@@ -22,8 +22,6 @@ Todo:
 from multiprocessing import Process
 from sys import stdout
 
-from astropy.io import fits
-from astropy.table import Table
 from pandas import concat, DataFrame, read_csv
 
 from misc import check_distance, check_source, extract_settings_elvis
@@ -132,9 +130,6 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df, full_d):
                 # Returns the index of the closest found source
                 index = check_distance(o_df, alpha, delta)
                 o_df = o_df.iloc[[index]]
-
-                print(o_df.columns)
-
                 source_d['DITHER'].append(dither)
 
                 catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
