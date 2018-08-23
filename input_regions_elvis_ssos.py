@@ -7,12 +7,10 @@ Versions:
 - 0.1: Initial release. Split from ssos_catalog_creation.py
 
 Information:
-- cat: -> hdu_list catalogue
-- data: -> Table formatted data
-- df: -> dataframe formatted data
+-
 
 Todo:
-    *
+    * Unit testing.
 
 *GNU Terry Pratchett*
 """
@@ -21,7 +19,7 @@ from math import cos, sin
 from astropy.units import degree
 from astropy.coordinates import SkyCoord
 from numpy import pi
-from pandas import concat, DataFrame, read_csv, Series
+from pandas import concat, DataFrame, Series
 
 from images_management_elvis import get_borders
 from misc import extract_settings_elvis

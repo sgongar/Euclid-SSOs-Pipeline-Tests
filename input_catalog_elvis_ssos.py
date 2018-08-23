@@ -7,12 +7,10 @@ Versions:
 - 0.1: Initial release. Split from ssos_catalog_creation.py
 
 Information:
-- cat: -> hdu_list catalogue
-- data: -> Table formatted data
-- df: -> dataframe formatted data
+-
 
 Todo:
-    *
+    * Unit testing.
 
 *GNU Terry Pratchett*
 """
@@ -121,7 +119,6 @@ def filter_by_position(sso_df):
     :param sso_df:
     :return:
     """
-    save = True
     borders_d = get_borders()
 
     right_sources = []
