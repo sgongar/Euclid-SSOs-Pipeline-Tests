@@ -207,7 +207,7 @@ def extract_ssos_df():
     cat_ssos['SOURCE'] = ssos_source
 
     for key_ in ['RA', 'DEC', 'VEL', 'THETA', 'ABMAG', 'H', 'J', 'Y', 'SOURCE']:
-        print(cat_ssos[key_], cat_ssos[key_].size)
+        print(key_, cat_ssos[key_].size)
 
     ssos_df = cat_ssos
 
