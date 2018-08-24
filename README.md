@@ -7,12 +7,26 @@ Utilities created to check pipeline behaviour. Using these scripts pipeline perf
 - [ ] Implement not detected catalogue for SSOs.
 - [ ] Implement not detected catalogue for stars.
 - [ ] Implement not detected catalogue for galaxies.
-- [ ] Implement detected catalogue for SSOs.
+- [x] Implement detected catalogue for SSOs.
 - [ ] Increment coverage to ninety percent.
 
-##### extracted_catalog_elvis_galaxies.py
-Creates a catalog of galaxies populated
+##### Extracted data
+All the following scripts were created to get the data obtained by sextractor from real sources. These catalogues, stored in CSV format, can be easily read by any office suite.
 
-##### extracted_catalog_elvis_stars.py
-Creates a catalog of stars populated
+###### extracted_catalog_elvis_galaxies.py
+Creates a catalogue populated by galaxies.
 
+###### extracted_catalog_elvis_stars.py
+Creates a catalogue populated by stars.
+
+###### extracted_catalog_elvis_stars.py
+Creates a catalogue populated by SSOs.
+
+###### extracted_regions_elvis_galaxies.py
+Creates a regions file populated by galaxies.
+
+###### extracted_regions_elvis_stars.py
+Creates a regions file populated by stars.
+
+###### extracted_regions_elvis_stars.py
+Creates a regions file populated by SSOs.
