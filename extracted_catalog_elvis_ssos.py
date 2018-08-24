@@ -168,10 +168,11 @@ def create_catalog():
     """
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
-    ssos_df = propagate_dithers
+    ssos_df = propagate_dithers()
+    ssos_clean_df = filter_by_position(ssos_df)
     save = True
 
-    print(ssos_df)
+    print(ssos_clean_df)
 
     # unique_sources = ssos_df['IDX']
     # total_stars = ssos_df['IDX'].size
