@@ -127,8 +127,18 @@ def propagate_dithers():
 def filter_by_position(sso_df):
     """
 
+    sso_clean_df columns:
+    - ABMAG
+    - DEC
+    - DITHER
+    - IDX
+    - RA
+    - SOURCE
+    - THETA
+    - VEL
+
     :param sso_df:
-    :return:
+    :return: sso_clean_df:
     """
     borders_d = get_borders()
 
@@ -171,20 +181,11 @@ def create_catalog():
     ssos_df = propagate_dithers()
     ssos_clean_df = filter_by_position(ssos_df)
 
-    print(ssos_clean_df['SOURCE'])
-
-    total_ssos = ssos_clean_df['IDX'].size
-
-    # print(total_ssos)
-
     unique_sources = ssos_clean_df['IDX']
-    total_ssos = ssos_clean_df['IDX'].size
+    total_ssos = len(list(set(ssos_clean_df['SOURCE'].tolist())))
 
-    # print(total_ssos)
-
-
-    """
-    sub_list_size = total_stars / 18
+    print(total_ssos)
+    sub_list_size = total_ssos / 18
 
     sub_list_l = []
     for idx_sub_list in range(0, 18, 1):
@@ -199,7 +200,8 @@ def create_catalog():
     areas_j = []
     for idx_l in range(0, 18, 1):
         areas_p = Process(target=create_stars_catalog_thread,
-                          args=(idx_l, sub_list_l[idx_l], stars_df, full_d))
+                          args=(idx_l, sub_list_l[idx_l], ssos_clean_df,
+                                full_d))
         areas_j.append(areas_p)
         areas_p.start()
 
@@ -208,6 +210,7 @@ def create_catalog():
         active_areas = list([job.is_alive() for job in areas_j])
         pass
 
+    """
     # Merges areas
     # Merges catalogs
     stars_list = []
@@ -224,7 +227,8 @@ def create_catalog():
     return stars_df
     """
 
-def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
+
+def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     """
 
     :param idx_l:
@@ -236,77 +240,82 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
     save = True
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
+    print(idx_l, sub_list)
+    """
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
-    for idx, star in enumerate(sub_list):
-        source_df = stars_df[stars_df['IDX'].isin([star])]
-        alpha = source_df['RA2000(Gaia)'].iloc[0]
-        delta = source_df['DEC2000(Gaia)'].iloc[0]
+    for idx, sso in enumerate(sub_list):
+        source_df = ssos_df[ssos_df['IDX'].isin([sso])]
 
-        source_d = create_empty_catalog_dict()
-        for dither in range(1, 5, 1):
-            o_df = check_source(full_d[dither], alpha, delta, keys)
-
-            if o_df.empty is not True:
-                # Returns the index of the closest found source
-                index = check_distance(o_df, alpha, delta)
-                o_df = o_df.iloc[[index]]
-
-                source_d['DITHER'].append(dither)
-
-                catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
-                source_d['CATALOG_NUMBER'].append(catalog_number)
-
-                x_world = float(o_df['X_WORLD'].iloc[0])
-                source_d['X_WORLD'].append(x_world)
-
-                y_world = float(o_df['Y_WORLD'].iloc[0])
-                source_d['Y_WORLD'].append(y_world)
-
-                mag_auto = float(o_df['MAG_AUTO'].iloc[0])
-                source_d['MAG_AUTO'].append(mag_auto)
-
-                magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
-                source_d['MAGERR_AUTO'].append(magerr_auto)
-
-                a_image = float(o_df['A_IMAGE'].iloc[0])
-                source_d['A_IMAGE'].append(a_image)
-
-                b_image = float(o_df['B_IMAGE'].iloc[0])
-                source_d['B_IMAGE'].append(b_image)
-
-                theta_image = float(o_df['THETA_IMAGE'].iloc[0])
-                source_d['THETA_IMAGE'].append(theta_image)
-
-                erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
-                source_d['ERRA_IMAGE'].append(erra_image)
-
-                errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
-                source_d['ERRB_IMAGE'].append(errb_image)
-
-                erra_world = float(o_df['ERRA_WORLD'].iloc[0])
-                source_d['ERRA_WORLD'].append(erra_world)
-
-                errb_world = float(o_df['ERRB_WORLD'].iloc[0])
-                source_d['ERRB_WORLD'].append(errb_world)
-
-                errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
-                source_d['ERRTHETA_WORLD'].append(errtheta_world)
-
-        if len(source_d['DITHER']) != 0:
-            for key_ in source_d.keys():
-                for value_ in source_d[key_]:
-                    cat_d[key_].append(value_)
-
-    cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER',
-                                       'X_WORLD', 'Y_WORLD', 'MAG_AUTO',
-                                       'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
-                                       'THETA_IMAGE', 'ERRA_IMAGE',
-                                       'ERRB_IMAGE', 'ERRA_WORLD',
-                                       'ERRB_WORLD', 'ERRTHETA_WORLD'])
-    if save:
-        cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
+        print(source_df)
+        """
+    #     alpha = source_df['RA2000(Gaia)'].iloc[0]
+    #     delta = source_df['DEC2000(Gaia)'].iloc[0]
+    #
+    #     source_d = create_empty_catalog_dict()
+    #     for dither in range(1, 5, 1):
+    #         o_df = check_source(full_d[dither], alpha, delta, keys)
+    #
+    #         if o_df.empty is not True:
+    #             # Returns the index of the closest found source
+    #             index = check_distance(o_df, alpha, delta)
+    #             o_df = o_df.iloc[[index]]
+    #
+    #             source_d['DITHER'].append(dither)
+    #
+    #             catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
+    #             source_d['CATALOG_NUMBER'].append(catalog_number)
+    #
+    #             x_world = float(o_df['X_WORLD'].iloc[0])
+    #             source_d['X_WORLD'].append(x_world)
+    #
+    #             y_world = float(o_df['Y_WORLD'].iloc[0])
+    #             source_d['Y_WORLD'].append(y_world)
+    #
+    #             mag_auto = float(o_df['MAG_AUTO'].iloc[0])
+    #             source_d['MAG_AUTO'].append(mag_auto)
+    #
+    #             magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
+    #             source_d['MAGERR_AUTO'].append(magerr_auto)
+    #
+    #             a_image = float(o_df['A_IMAGE'].iloc[0])
+    #             source_d['A_IMAGE'].append(a_image)
+    #
+    #             b_image = float(o_df['B_IMAGE'].iloc[0])
+    #             source_d['B_IMAGE'].append(b_image)
+    #
+    #             theta_image = float(o_df['THETA_IMAGE'].iloc[0])
+    #             source_d['THETA_IMAGE'].append(theta_image)
+    #
+    #             erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
+    #             source_d['ERRA_IMAGE'].append(erra_image)
+    #
+    #             errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
+    #             source_d['ERRB_IMAGE'].append(errb_image)
+    #
+    #             erra_world = float(o_df['ERRA_WORLD'].iloc[0])
+    #             source_d['ERRA_WORLD'].append(erra_world)
+    #
+    #             errb_world = float(o_df['ERRB_WORLD'].iloc[0])
+    #             source_d['ERRB_WORLD'].append(errb_world)
+    #
+    #             errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
+    #             source_d['ERRTHETA_WORLD'].append(errtheta_world)
+    #
+    #     if len(source_d['DITHER']) != 0:
+    #         for key_ in source_d.keys():
+    #             for value_ in source_d[key_]:
+    #                 cat_d[key_].append(value_)
+    #
+    # cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER',
+    #                                    'X_WORLD', 'Y_WORLD', 'MAG_AUTO',
+    #                                    'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
+    #                                    'THETA_IMAGE', 'ERRA_IMAGE',
+    #                                    'ERRB_IMAGE', 'ERRA_WORLD',
+    #                                    'ERRB_WORLD', 'ERRTHETA_WORLD'])
+    # if save:
+    #     cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
 
 
 if __name__ == "__main__":
