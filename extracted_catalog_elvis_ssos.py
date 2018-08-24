@@ -47,10 +47,12 @@ def create_empty_catalog_dict():
     :return: cat_d
     """
     cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [], 'DEC': [],
-             'VEL': [], 'ABMAG': [], 'THETA': [], 'MAG_AUTO': [],
-             'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
-             'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
-             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
+             'VEL': [], 'ABMAG': [], 'THETA': []}
+
+#  'MAG_AUTO': [],
+# 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
+# 'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
+# 'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []
 
     return cat_d
 
