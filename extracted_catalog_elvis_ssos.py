@@ -241,14 +241,13 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
-    from time import sleep
-    sleep(10)
 
-    raise Exception
+    from time import sleep
     for idx, sso in enumerate(sub_list):
-        source_df = ssos_df[ssos_df['IDX'].isin([sso])]
+        source_df = ssos_df[ssos_df['SOURCE'].isin([sso])]
 
         print(source_df)
+        sleep(5)
     #     alpha = source_df['RA2000(Gaia)'].iloc[0]
     #     delta = source_df['DEC2000(Gaia)'].iloc[0]
     #
