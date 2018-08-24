@@ -242,7 +242,6 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
 
-    from time import sleep
     for idx, sso in enumerate(sub_list):
         source_df = ssos_df[ssos_df['SOURCE'].isin([sso])]
 
@@ -250,10 +249,20 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
         for dither_ in source_df['DITHER'].tolist():
             dither_df = source_df[source_df['DITHER'].isin([dither_])]
 
+            idx_ = int(dither_df['IDX'].iloc[0])
+            print('idx {}'.format(idx))
+            source = int(dither_df['SOURCE'].iloc[0])
+            print('source {}'.format(source))
             alpha = float(dither_df['RA'].iloc[0])
             print('alpha {}'.format(alpha))
             delta = float(dither_df['DEC'].iloc[0])
             print('delta {}'.format(delta))
+            vel = float(dither_df['VEL'].iloc[0])
+            print('vel {}'.format(vel))
+            abmag = float(dither_df['ABMAG'].iloc[0])
+            print('abmag {}'.format(abmag))
+            theta = float(dither_df['THETA'].iloc[0])
+            print('theta {}'.format(theta))
 
             o_df = check_source(full_d[dither_], alpha, delta, keys)
             if o_df.empty is not True:
@@ -262,13 +271,32 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 index = check_distance(o_df, alpha, delta)
                 o_df = o_df.iloc[[index]]
 
-                print(o_df.columns)
+                cat_d['IDX'].append(idx_)
 
+                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
+                cat_d['DEC'].append(delta_j2000)
+
+                alpha_j2000 = float(o_df['ALPHA_J2000'].iloc[0])
+                cat_d['RA'].append(alpha_j2000)
+
+                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
+                cat_d['DEC'].append(delta_j2000)
+
+                alpha_j2000 = float(o_df['ALPHA_J2000'].iloc[0])
+                cat_d['RA'].append(alpha_j2000)
+
+                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
+                cat_d['DEC'].append(delta_j2000)
+
+                alpha_j2000 = float(o_df['ALPHA_J2000'].iloc[0])
+                cat_d['RA'].append(alpha_j2000)
+
+                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
+                cat_d['DEC'].append(delta_j2000)
 
     #             source_d['DITHER'].append(dither_)
     #
-    # cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [],
-    #          'DEC': [], 'VEL': [], 'ABMAG': [], 'THETA': []}
+
     #
     # return cat_d
     #
@@ -277,8 +305,7 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     #             catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
     #             source_d['CATALOG_NUMBER'].append(catalog_number)
     #
-    #             x_world = float(o_df[''].iloc[0])
-    #             source_d['X_WORLD'].append(x_world)
+
     #
     #             y_world = float(o_df['Y_WORLD'].iloc[0])
     #             source_d['Y_WORLD'].append(y_world)
