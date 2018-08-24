@@ -185,6 +185,7 @@ def create_catalog():
     total_ssos = len(list(set(ssos_clean_df['SOURCE'].tolist())))
 
     print(total_ssos)
+    raise Exception
     sub_list_size = total_ssos / 18
 
     sub_list_l = []
