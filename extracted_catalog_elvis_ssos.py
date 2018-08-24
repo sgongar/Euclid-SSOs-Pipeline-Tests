@@ -181,16 +181,13 @@ def create_catalog():
     ssos_df = propagate_dithers()
     ssos_clean_df = filter_by_position(ssos_df)
 
-    unique_sources = ssos_clean_df['IDX']
+    unique_sources = list(set(ssos_clean_df['SOURCE'].tolist()))
     total_ssos = len(list(set(ssos_clean_df['SOURCE'].tolist())))
 
-    print(total_ssos)
-    raise Exception
-    sub_list_size = total_ssos / 18
-
+    sub_list_size = total_ssos / 10
     sub_list_l = []
-    for idx_sub_list in range(0, 18, 1):
-        if idx_sub_list != (18 - 1):
+    for idx_sub_list in range(0, 10, 1):
+        if idx_sub_list != (10 - 1):
             idx_down = sub_list_size * idx_sub_list
             idx_up = sub_list_size * (idx_sub_list + 1)
             sub_list_l.append(unique_sources[idx_down:idx_up])
@@ -199,7 +196,7 @@ def create_catalog():
             sub_list_l.append(unique_sources[idx_down:])
 
     areas_j = []
-    for idx_l in range(0, 18, 1):
+    for idx_l in range(0, 10, 1):
         areas_p = Process(target=create_stars_catalog_thread,
                           args=(idx_l, sub_list_l[idx_l], ssos_clean_df,
                                 full_d))
@@ -246,6 +243,8 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
     from time import sleep
     sleep(10)
+
+    raise Exception
     for idx, sso in enumerate(sub_list):
         source_df = ssos_df[ssos_df['IDX'].isin([sso])]
 
