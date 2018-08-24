@@ -247,13 +247,21 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
         source_df = ssos_df[ssos_df['SOURCE'].isin([sso])]
 
         print(source_df['DITHER'].tolist())
-        sleep(5)
+        for dither_ in source_df['DITHER'].tolist():
+            dither_df = source_df[source_df['DITHER'].isin([dither_])]
+
+            alpha = dither_df['RA']
+            print('alpha {}'.format(alpha))
+            delta = dither_df['DEC']
+            print('delta {}'.format(delta))
+
+            # o_df = check_source(full_d[dither], alpha, delta, keys)
+            sleep(5)
     #     alpha = source_df['RA2000(Gaia)'].iloc[0]
     #     delta = source_df['DEC2000(Gaia)'].iloc[0]
     #
     #     source_d = create_empty_catalog_dict()
     #     for dither in range(1, 5, 1):
-    #         o_df = check_source(full_d[dither], alpha, delta, keys)
     #
     #         if o_df.empty is not True:
     #             # Returns the index of the closest found source
