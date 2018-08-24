@@ -174,8 +174,6 @@ def create_catalog():
     print(ssos_clean_df['IDX'].size)
     save = True
 
-    print(ssos_df)
-
     # unique_sources = ssos_df['IDX']
     # total_stars = ssos_df['IDX'].size
 
