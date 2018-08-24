@@ -171,7 +171,7 @@ def create_catalog():
     ssos_df = propagate_dithers()
     ssos_clean_df = filter_by_position(ssos_df)
 
-    print(ssos_clean_df.columns)
+    print(ssos_clean_df['SOURCE'])
 
     total_ssos = ssos_clean_df['IDX'].size
 
