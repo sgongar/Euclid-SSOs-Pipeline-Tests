@@ -168,7 +168,7 @@ def create_catalog():
     """
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
-    ssos_df = extract_ssos_df()
+    ssos_df = propagate_dithers
     save = True
 
     unique_sources = ssos_df['IDX']
