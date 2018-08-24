@@ -201,14 +201,12 @@ def extract_ssos_df():
     :return:
     """
     prfs_dict = extract_settings_elvis()
-    cat_ssos = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
-                        delim_whitespace=True)
-    ssos_source = range(0, cat_ssos['RA'].size, 1)
-    cat_ssos['SOURCE'] = ssos_source
+    ssos_df = read_csv('{}/ssos_cat.txt'.format(prfs_dict['references']),
+                       delim_whitespace=True)
+    ssos_source = range(0, ssos_df['RA'].size, 1)
+    ssos_df['SOURCE'] = ssos_source
 
-    for key_ in ['RA', 'DEC', 'VEL', 'THETA', 'ABMAG', 'H', 'J', 'Y', 'SOURCE']:
-        print(key_, cat_ssos[key_].size)
-
-    ssos_df = cat_ssos
+    ssos_idx = range(0, 999, 1)
+    ssos_df['IDX'] = ssos_idx
 
     return ssos_df

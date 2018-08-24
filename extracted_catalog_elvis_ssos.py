@@ -25,13 +25,12 @@ Todo:
 *GNU Terry Pratchett*
 """
 from math import cos, sin
-
-from astropy.units import degree
-from astropy.coordinates import SkyCoord
-
 from multiprocessing import Process
 from sys import stdout
 
+from astropy.units import degree
+from astropy.coordinates import SkyCoord
+from numpy import pi
 from pandas import concat, DataFrame, read_csv
 
 from images_management_elvis import get_borders
@@ -56,6 +55,7 @@ def create_empty_catalog_dict():
              'DEC': [], 'VEL': [], 'ABMAG': [], 'THETA': []}
 
     return cat_d
+
 
 def propagate_dithers():
     """
@@ -123,7 +123,7 @@ def propagate_dithers():
 
     return sso_cat
 
-# This is wrong! New SSOs catalog is coming!
+
 def filter_by_position(sso_df):
     """
 
@@ -155,17 +155,10 @@ def filter_by_position(sso_df):
                 if comp:
                     right_sources.append(row.IDX)
 
-    sso_df.to_csv('catalogues_input/cat_ssos.csv')
-    for dither_ in range(1, 5, 1):
-        catalog = sso_df[sso_df['DITHER'].isin([dither_])]
-        catalog.to_csv('catalogues_input/cat_ssos_{}.csv'.format(dither_))
-
     # Removes non visible sources
     sso_clean_df = sso_df[sso_df['IDX'].isin(right_sources)]
-    sso_clean_df.to_csv('catalogues_input/cat_clean_ssos.csv')
-    for dither_ in range(1, 5, 1):
-        clean_catalog = sso_clean_df[sso_clean_df['DITHER'].isin([dither_])]
-        clean_catalog.to_csv('catalogues_input/cat_clean_ssos_{}.csv'.format(dither_))
+
+    return sso_clean_df
 
 
 def create_catalog():
