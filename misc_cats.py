@@ -206,7 +206,4 @@ def extract_ssos_df():
     ssos_source = range(0, ssos_df['RA'].size, 1)
     ssos_df['SOURCE'] = ssos_source
 
-    ssos_idx = range(0, 1000, 1)
-    ssos_df['IDX'] = ssos_idx
-
     return ssos_df
