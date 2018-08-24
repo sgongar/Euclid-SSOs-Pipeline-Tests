@@ -240,8 +240,6 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     save = True
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
-    print(idx_l, sub_list)
-    """
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
@@ -249,7 +247,6 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
         source_df = ssos_df[ssos_df['IDX'].isin([sso])]
 
         print(source_df)
-        """
     #     alpha = source_df['RA2000(Gaia)'].iloc[0]
     #     delta = source_df['DEC2000(Gaia)'].iloc[0]
     #
