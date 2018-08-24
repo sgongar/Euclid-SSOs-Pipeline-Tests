@@ -255,7 +255,11 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
             delta = float(dither_df['DEC'].iloc[0])
             print('delta {}'.format(delta))
 
-            # o_df = check_source(full_d[dither], alpha, delta, keys)
+            o_df = check_source(full_d[dither_], alpha, delta, keys)
+            if o_df.empty is True:
+                print('out')
+            else:
+                print('in')
             sleep(5)
     #     alpha = source_df['RA2000(Gaia)'].iloc[0]
     #     delta = source_df['DEC2000(Gaia)'].iloc[0]
