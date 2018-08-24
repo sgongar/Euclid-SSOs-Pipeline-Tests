@@ -243,6 +243,8 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
+    from time import sleep
+    sleep(10)
     for idx, sso in enumerate(sub_list):
         source_df = ssos_df[ssos_df['IDX'].isin([sso])]
 
