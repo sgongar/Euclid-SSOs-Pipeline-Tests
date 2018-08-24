@@ -170,7 +170,8 @@ def create_catalog():
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
     ssos_df = propagate_dithers()
     print(ssos_df['IDX'].size)
-    # ssos_clean_df = filter_by_position(ssos_df)
+    ssos_clean_df = filter_by_position(ssos_df)
+    print(ssos_clean_df['IDX'].size)
     save = True
 
     print(ssos_df)
