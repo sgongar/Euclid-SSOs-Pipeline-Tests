@@ -1,16 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-""" Creates a catalog populated of stars from sextracted catalogs
+""" Creates a catalog populated of ssos from sextracted catalogs
 of single CCDs images.
 
 Versions:
-- 0.1: Initial release. Split from check.py
-       Recreated for ELViS analysis pipeline.
-- 0.2: Single input catalogue and multiple input catalogues added.
-- 0.3: Check method for catalogue creation added.
-- 0.4: Easiest way implemented. Rewritten.
-- 0.5: Now can saves catalogues by dither.
+- 0.1: Initial release.
 
 Information:
 -
@@ -208,22 +203,18 @@ def create_catalog():
         active_areas = list([job.is_alive() for job in areas_j])
         pass
 
-    """
     # Merges areas
     # Merges catalogs
-    stars_list = []
-    for idx_csv in range(0, 18, 1):
-        stars_ = read_csv('tmp_stars/stars_{}.csv'.format(idx_csv),
-                          index_col=0)
-        stars_list.append(stars_)
+    ssos_list = []
+    for idx_csv in range(0, 10, 1):
+        ssos_ = read_csv('tmp_ssos/ssos_{}.csv'.format(idx_csv),
+                         index_col=0)
+        ssos_list.append(ssos_)
 
-    stars_df = concat(stars_list)
+    ssos_df = concat(ssos_list)
+    ssos_df.to_csv('catalogues_detected/ssos.csv')
 
-    if save:
-        stars_df.to_csv('catalogues_detected/stars.csv')
-
-    return stars_df
-    """
+    return ssos_df
 
 
 def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
@@ -248,33 +239,24 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
         print(source_df['DITHER'].tolist())
         for dither_ in source_df['DITHER'].tolist():
             dither_df = source_df[source_df['DITHER'].isin([dither_])]
-
-            idx_ = int(dither_df['IDX'].iloc[0])
-            print('idx {}'.format(idx))
-            source = int(dither_df['SOURCE'].iloc[0])
-            print('source {}'.format(source))
+            # Gets alpha/delta of actual source
             alpha = float(dither_df['RA'].iloc[0])
-            print('alpha {}'.format(alpha))
             delta = float(dither_df['DEC'].iloc[0])
-            print('delta {}'.format(delta))
-            vel = float(dither_df['VEL'].iloc[0])
-            print('vel {}'.format(vel))
-            abmag = float(dither_df['ABMAG'].iloc[0])
-            print('abmag {}'.format(abmag))
-            theta = float(dither_df['THETA'].iloc[0])
-            print('theta {}'.format(theta))
 
             o_df = check_source(full_d[dither_], alpha, delta, keys)
             if o_df.empty is not True:
-                print('out')
                 # Returns the index of the closest found source
                 index = check_distance(o_df, alpha, delta)
+
                 o_df = o_df.iloc[[index]]
 
+                idx_ = int(dither_df['IDX'].iloc[0])
                 cat_d['IDX'].append(idx_)
 
-                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
-                cat_d['DEC'].append(delta_j2000)
+                source = int(dither_df['SOURCE'].iloc[0])
+                cat_d['SOURCE'].append(source)
+
+                cat_d['DITHER'].append(dither_)
 
                 alpha_j2000 = float(o_df['ALPHA_J2000'].iloc[0])
                 cat_d['RA'].append(alpha_j2000)
@@ -282,92 +264,19 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
                 cat_d['DEC'].append(delta_j2000)
 
-                alpha_j2000 = float(o_df['ALPHA_J2000'].iloc[0])
-                cat_d['RA'].append(alpha_j2000)
+                vel = float(dither_df['VEL'].iloc[0])
+                cat_d['VEL'].append(vel)
 
-                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
-                cat_d['DEC'].append(delta_j2000)
+                abmag = float(dither_df['ABMAG'].iloc[0])
+                cat_d['ABMAG'].append(abmag)
 
-                alpha_j2000 = float(o_df['ALPHA_J2000'].iloc[0])
-                cat_d['RA'].append(alpha_j2000)
+                theta = float(dither_df['THETA'].iloc[0])
+                cat_d['THETA'].append(theta)
 
-                delta_j2000 = float(o_df['DELTA_J2000'].iloc[0])
-                cat_d['DEC'].append(delta_j2000)
+    cat_df = DataFrame(cat_d, columns=['IDX', 'SOURCE', 'DITHER', 'RA',
+                                       'DEC', 'VEL', 'ABMAG', 'THETA'])
 
-    #             source_d['DITHER'].append(dither_)
-    #
-
-    #
-    # return cat_d
-    #
-    #
-    #
-    #             catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
-    #             source_d['CATALOG_NUMBER'].append(catalog_number)
-    #
-
-    #
-    #             y_world = float(o_df['Y_WORLD'].iloc[0])
-    #             source_d['Y_WORLD'].append(y_world)
-    #
-    #             mag_auto = float(o_df['MAG_AUTO'].iloc[0])
-    #             source_d['MAG_AUTO'].append(mag_auto)
-    #
-    #             magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
-    #             source_d['MAGERR_AUTO'].append(magerr_auto)
-    #
-    #             a_image = float(o_df['A_IMAGE'].iloc[0])
-    #             source_d['A_IMAGE'].append(a_image)
-    #
-    #             b_image = float(o_df['B_IMAGE'].iloc[0])
-    #             source_d['B_IMAGE'].append(b_image)
-    #
-    #             theta_image = float(o_df['THETA_IMAGE'].iloc[0])
-    #             source_d['THETA_IMAGE'].append(theta_image)
-    #
-    #             erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
-    #             source_d['ERRA_IMAGE'].append(erra_image)
-    #
-    #             errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
-    #             source_d['ERRB_IMAGE'].append(errb_image)
-    #
-    #             erra_world = float(o_df['ERRA_WORLD'].iloc[0])
-    #             source_d['ERRA_WORLD'].append(erra_world)
-    #
-    #             errb_world = float(o_df['ERRB_WORLD'].iloc[0])
-    #             source_d['ERRB_WORLD'].append(errb_world)
-    #
-    #             errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
-    #             source_d['ERRTHETA_WORLD'].append(errtheta_world)
-    #
-    #
-    #
-    #         else:
-    #             print('in')
-    #         sleep(5)
-    #     alpha = source_df['RA2000(Gaia)'].iloc[0]
-    #     delta = source_df['DEC2000(Gaia)'].iloc[0]
-    #
-    #     for dither in range(1, 5, 1):
-    #
-    #         if o_df.empty is not True:
-
-    #
-
-    #
-    #     if len(source_d['DITHER']) != 0:
-    #         for key_ in source_d.keys():
-    #             for value_ in source_d[key_]:
-    #                 cat_d[key_].append(value_)
-    #
-    # cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER',
-    #                                    'X_WORLD', 'Y_WORLD', 'MAG_AUTO',
-    #                                    'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
-    #                                    'THETA_IMAGE', 'ERRA_IMAGE',
-    #                                    'ERRB_IMAGE', 'ERRA_WORLD',
-    #                                    'ERRB_WORLD', 'ERRTHETA_WORLD'])
-    # if save:
-    #     cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
+    cat_df.to_csv('tmp_ssos/ssos_{}.csv'.format(idx_l))
 
 
 if __name__ == "__main__":
