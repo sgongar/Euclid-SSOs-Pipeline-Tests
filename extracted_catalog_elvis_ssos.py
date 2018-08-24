@@ -250,9 +250,9 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
         for dither_ in source_df['DITHER'].tolist():
             dither_df = source_df[source_df['DITHER'].isin([dither_])]
 
-            alpha = dither_df['RA']
+            alpha = float(dither_df['RA'].iloc[0])
             print('alpha {}'.format(alpha))
-            delta = dither_df['DEC']
+            delta = float(dither_df['DEC'].iloc[0])
             print('delta {}'.format(delta))
 
             # o_df = check_source(full_d[dither], alpha, delta, keys)
