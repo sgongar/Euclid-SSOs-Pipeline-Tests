@@ -41,6 +41,20 @@ __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
 
 
+def create_output_catalog_dict():
+    """
+
+    :return: cat_d
+    """
+    cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [], 'DEC': [],
+             'VEL': [], 'ABMAG': [], 'THETA': [], 'MAG_AUTO': [],
+             'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
+             'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
+             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
+
+    return cat_d
+
+
 def create_empty_catalog_dict():
     """
 
@@ -48,11 +62,6 @@ def create_empty_catalog_dict():
     """
     cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [], 'DEC': [],
              'VEL': [], 'ABMAG': [], 'THETA': []}
-
-#  'MAG_AUTO': [],
-# 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
-# 'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
-# 'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []
 
     return cat_d
 
@@ -197,7 +206,7 @@ def create_catalog():
 
     areas_j = []
     for idx_l in range(0, 10, 1):
-        areas_p = Process(target=create_stars_catalog_thread,
+        areas_p = Process(target=create_ssos_catalog_thread,
                           args=(idx_l, sub_list_l[idx_l], ssos_clean_df,
                                 full_d))
         areas_j.append(areas_p)
@@ -222,7 +231,7 @@ def create_catalog():
     return ssos_df
 
 
-def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
+def create_ssos_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     """
 
     :param idx_l:
@@ -234,7 +243,7 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
     # Creates an empty catalog for all detected sources
-    cat_d = create_empty_catalog_dict()
+    cat_d = create_output_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
 
@@ -279,15 +288,42 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 theta = float(dither_df['THETA'].iloc[0])
                 cat_d['THETA'].append(theta)
 
-    """
-    'MAG_AUTO': [],
-    'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
-    'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
-    'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [
-    """
+                mag_auto = float(o_df['MAG_AUTO'].iloc[0])
+                cat_d['MAG_AUTO'].append(mag_auto)
 
-    cat_df = DataFrame(cat_d, columns=['IDX', 'SOURCE', 'DITHER', 'RA',
-                                       'DEC', 'VEL', 'ABMAG', 'THETA'])
+                a_image = float(o_df['A_IMAGE'].iloc[0])
+                cat_d['A_IMAGE'].append(a_image)
+
+                b_image = float(o_df['B_IMAGE'].iloc[0])
+                cat_d['B_IMAGE'].append(b_image)
+
+                theta_image = float(o_df['THETA_IMAGE'].iloc[0])
+                cat_d['THETA_IMAGE'].append(theta_image)
+
+                erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
+                cat_d['ERRA_IMAGE'].append(erra_image)
+
+                errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
+                cat_d['ERRB_IMAGE'].append(errb_image)
+
+                magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
+                cat_d['MAGERR_AUTO'].append(magerr_auto)
+
+                erra_world = float(o_df['ERRA_WORLD'].iloc[0])
+                cat_d['ERRA_WORLD'].append(erra_world)
+
+                errb_world = float(o_df['ERRB_WORLD'].iloc[0])
+                cat_d['ERRB_WORLD'].append(errb_world)
+
+                errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
+                cat_d['ERRTHETA_WORLD'].append(errtheta_world)
+
+    cat_df = DataFrame(cat_d, columns=['IDX', 'SOURCE', 'DITHER', 'RA', 'DEC',
+                                       'VEL', 'ABMAG', 'THETA', 'MAG_AUTO',
+                                       'A_IMAGE', 'B_IMAGE', 'THETA_IMAGE',
+                                       'ERRA_IMAGE', 'ERRB_IMAGE',
+                                       'MAGERR_AUTO', 'ERRA_WORLD',
+                                       'ERRB_WORLD', 'ERRTHETA_WORLD'])
 
     cat_df.to_csv('tmp_ssos/ssos_{}.csv'.format(idx_l))
 
