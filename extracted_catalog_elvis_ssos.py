@@ -35,7 +35,7 @@ from misc import extract_settings_elvis, check_distance, check_source
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
 __credits__ = ["Samuel Góngora García"]
-__version__ = "0.5"
+__version__ = "0.1"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
@@ -46,8 +46,11 @@ def create_empty_catalog_dict():
 
     :return: cat_d
     """
-    cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [],
-             'DEC': [], 'VEL': [], 'ABMAG': [], 'THETA': []}
+    cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [], 'DEC': [],
+             'VEL': [], 'ABMAG': [], 'THETA': [], 'MAG_AUTO': [],
+             'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
+             'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
+             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
 
     return cat_d
 
@@ -249,6 +252,7 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 index = check_distance(o_df, alpha, delta)
 
                 o_df = o_df.iloc[[index]]
+                print(o_df.columns)
 
                 idx_ = int(dither_df['IDX'].iloc[0])
                 cat_d['IDX'].append(idx_)
@@ -272,6 +276,13 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
 
                 theta = float(dither_df['THETA'].iloc[0])
                 cat_d['THETA'].append(theta)
+
+    """
+    'MAG_AUTO': [],
+    'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
+    'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
+    'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [
+    """
 
     cat_df = DataFrame(cat_d, columns=['IDX', 'SOURCE', 'DITHER', 'RA',
                                        'DEC', 'VEL', 'ABMAG', 'THETA'])
