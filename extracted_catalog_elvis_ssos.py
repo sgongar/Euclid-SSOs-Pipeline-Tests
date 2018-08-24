@@ -171,10 +171,12 @@ def create_catalog():
     ssos_df = propagate_dithers
     save = True
 
-    unique_sources = ssos_df['IDX']
-    total_stars = ssos_df['IDX'].size
+    print(ssos_df)
 
-    print(total_stars)
+    # unique_sources = ssos_df['IDX']
+    # total_stars = ssos_df['IDX'].size
+
+    # print(total_stars)
 
     """
     sub_list_size = total_stars / 18
