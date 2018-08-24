@@ -49,7 +49,8 @@ def create_empty_catalog_dict():
     cat_d = {'DITHER': [], 'CATALOG_NUMBER': [], 'X_WORLD': [], 'Y_WORLD': [],
              'MAG_AUTO': [], 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
              'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
-             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
+             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [],
+             'CLASS_STAR': []}
 
     return cat_d
 
@@ -177,6 +178,9 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
                 errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
                 source_d['ERRTHETA_WORLD'].append(errtheta_world)
 
+                class_star = float(o_df['CLASS_STAR'].iloc[0])
+                source_d['CLASS_STAR'].append(class_star)
+
         if len(source_d['DITHER']) != 0:
             for key_ in source_d.keys():
                 for value_ in source_d[key_]:
@@ -187,7 +191,8 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
                                        'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
                                        'THETA_IMAGE', 'ERRA_IMAGE',
                                        'ERRB_IMAGE', 'ERRA_WORLD',
-                                       'ERRB_WORLD', 'ERRTHETA_WORLD'])
+                                       'ERRB_WORLD', 'ERRTHETA_WORLD',
+                                       'CLASS_STAR'])
     if save:
         cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
 

@@ -50,7 +50,8 @@ def create_output_catalog_dict():
              'VEL': [], 'ABMAG': [], 'THETA': [], 'MAG_AUTO': [],
              'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
              'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
-             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': []}
+             'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [],
+             'CLASS_STAR': []}
 
     return cat_d
 
@@ -250,7 +251,6 @@ def create_ssos_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     for idx, sso in enumerate(sub_list):
         source_df = ssos_df[ssos_df['SOURCE'].isin([sso])]
 
-        print(source_df['DITHER'].tolist())
         for dither_ in source_df['DITHER'].tolist():
             dither_df = source_df[source_df['DITHER'].isin([dither_])]
             # Gets alpha/delta of actual source
@@ -263,7 +263,6 @@ def create_ssos_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 index = check_distance(o_df, alpha, delta)
 
                 o_df = o_df.iloc[[index]]
-                print(o_df.columns)
 
                 idx_ = int(dither_df['IDX'].iloc[0])
                 cat_d['IDX'].append(idx_)
@@ -318,12 +317,16 @@ def create_ssos_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
                 cat_d['ERRTHETA_WORLD'].append(errtheta_world)
 
+                class_star = float(o_df['CLASS_STAR'].iloc[0])
+                cat_d['CLASS_STAR'].append(class_star)
+
     cat_df = DataFrame(cat_d, columns=['IDX', 'SOURCE', 'DITHER', 'RA', 'DEC',
                                        'VEL', 'ABMAG', 'THETA', 'MAG_AUTO',
                                        'A_IMAGE', 'B_IMAGE', 'THETA_IMAGE',
                                        'ERRA_IMAGE', 'ERRB_IMAGE',
                                        'MAGERR_AUTO', 'ERRA_WORLD',
-                                       'ERRB_WORLD', 'ERRTHETA_WORLD'])
+                                       'ERRB_WORLD', 'ERRTHETA_WORLD',
+                                       'CLASS_STAR'])
 
     cat_df.to_csv('tmp_ssos/ssos_{}.csv'.format(idx_l))
 
