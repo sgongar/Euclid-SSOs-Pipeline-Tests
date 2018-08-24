@@ -231,13 +231,13 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
 
     :param idx_l:
     :param sub_list:
-    :param stars_df:
+    :param ssos_df:
     :param full_d:
     :return:
     """
-    save = True
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
+    # Creates an empty catalog for all detected sources
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
@@ -256,28 +256,28 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
             print('delta {}'.format(delta))
 
             o_df = check_source(full_d[dither_], alpha, delta, keys)
-            if o_df.empty is True:
+            if o_df.empty is not True:
                 print('out')
-            else:
-                print('in')
-            sleep(5)
-    #     alpha = source_df['RA2000(Gaia)'].iloc[0]
-    #     delta = source_df['DEC2000(Gaia)'].iloc[0]
+                # Returns the index of the closest found source
+                index = check_distance(o_df, alpha, delta)
+                o_df = o_df.iloc[[index]]
+
+                print(o_df.columns)
+
+
+    #             source_d['DITHER'].append(dither_)
     #
-    #     source_d = create_empty_catalog_dict()
-    #     for dither in range(1, 5, 1):
+    # cat_d = {'IDX': [], 'SOURCE': [], 'DITHER': [], 'RA': [],
+    #          'DEC': [], 'VEL': [], 'ABMAG': [], 'THETA': []}
     #
-    #         if o_df.empty is not True:
-    #             # Returns the index of the closest found source
-    #             index = check_distance(o_df, alpha, delta)
-    #             o_df = o_df.iloc[[index]]
+    # return cat_d
     #
-    #             source_d['DITHER'].append(dither)
+    #
     #
     #             catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
     #             source_d['CATALOG_NUMBER'].append(catalog_number)
     #
-    #             x_world = float(o_df['X_WORLD'].iloc[0])
+    #             x_world = float(o_df[''].iloc[0])
     #             source_d['X_WORLD'].append(x_world)
     #
     #             y_world = float(o_df['Y_WORLD'].iloc[0])
@@ -312,6 +312,21 @@ def create_stars_catalog_thread(idx_l, sub_list, ssos_df, full_d):
     #
     #             errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
     #             source_d['ERRTHETA_WORLD'].append(errtheta_world)
+    #
+    #
+    #
+    #         else:
+    #             print('in')
+    #         sleep(5)
+    #     alpha = source_df['RA2000(Gaia)'].iloc[0]
+    #     delta = source_df['DEC2000(Gaia)'].iloc[0]
+    #
+    #     for dither in range(1, 5, 1):
+    #
+    #         if o_df.empty is not True:
+
+    #
+
     #
     #     if len(source_d['DITHER']) != 0:
     #         for key_ in source_d.keys():
