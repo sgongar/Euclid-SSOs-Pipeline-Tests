@@ -208,7 +208,7 @@ def extract_ssos_df():
 
     print(ssos_df['SOURCE'].size)
 
-    ssos_idx = range(0, 999, 1)
+    ssos_idx = range(0, 1000, 1)
     print(len(ssos_idx))
     ssos_df['IDX'] = ssos_idx
 
