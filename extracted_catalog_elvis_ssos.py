@@ -169,6 +169,7 @@ def create_catalog():
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
     ssos_df = propagate_dithers()
+    print(ssos_df['IDX'].size)
     # ssos_clean_df = filter_by_position(ssos_df)
     save = True
 
