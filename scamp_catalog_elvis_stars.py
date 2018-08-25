@@ -76,6 +76,9 @@ def create_catalog():
     stars_df = extract_stars_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
+    print(full_d.columns)
+    raise Exception
+
     scamp_df = create_scamp_df()
 
     unique_sources = stars_df['IDX']
