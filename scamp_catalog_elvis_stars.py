@@ -75,7 +75,6 @@ def create_catalog():
     """
     stars_df = extract_stars_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
-    raise Exception
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
 
     scamp_df = create_scamp_df()
