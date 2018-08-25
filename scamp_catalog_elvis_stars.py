@@ -158,10 +158,10 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                 df = check_source(df, alpha, delta, keys)
                 if df.empty is True:
                     no += 1
-                    print('no')
+                    print('no {}'.format(no))
                 else:
                     ok += 1
-                    print('ok')
+                    print('ok {}'.format(ok))
 
                 source_d['DITHER'].append(dither)
 
