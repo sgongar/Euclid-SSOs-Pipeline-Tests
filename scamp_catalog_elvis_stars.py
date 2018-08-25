@@ -54,26 +54,11 @@ def get_cat(cat_n):
     return cats[cat_n]
 
 
-def test_function():
+def test_function(scamp_df):
     """
     """
-    from astropy.io import fits
-    from astropy.table import Table
+    print(scamp_df.columns)
 
-    prfs_dict = extract_settings_elvis()
-
-    cats_number = 144
-    cat_d = {}
-    for cat_n in range(1, cats_number + 1, 1):
-        cat_file = get_cat(cat_n)
-        cat_data = fits.open('{}/{}'.format(prfs_dict['fits_dir'],
-                                            cat_file))
-
-        ccd_df = Table(cat_data[2].data)
-        # self.logger.debug('CCD catalog {} to Pandas'.format(cat_n))
-        cat_d[cat_n] = ccd_df.to_pandas()
-
-    print(cat_d)
 
 
 def create_empty_catalog_dict():
@@ -95,15 +80,12 @@ def create_catalog():
 
     :return:
     """
-    test_function()
-
-    raise Exception
     stars_df = extract_stars_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
     scamp_df = create_scamp_df()
 
-    print(scamp_df)
+    test_function(scamp_df)
 
     unique_sources = stars_df['IDX']
     total_stars = stars_df['IDX'].size
