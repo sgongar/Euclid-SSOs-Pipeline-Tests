@@ -86,6 +86,7 @@ def create_catalog():
     scamp_df = create_scamp_df()
 
     test_function(scamp_df)
+    raise Exception
 
     unique_sources = stars_df['IDX']
     total_stars = stars_df['IDX'].size
