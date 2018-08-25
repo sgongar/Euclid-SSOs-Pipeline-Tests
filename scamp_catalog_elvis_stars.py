@@ -75,8 +75,8 @@ def create_catalog():
     """
     stars_df = extract_stars_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
-    full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
     raise Exception
+    full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
 
     scamp_df = create_scamp_df()
 
@@ -154,7 +154,8 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                 df = scamp_df[scamp_df['CATALOG_NUMBER'].isin([cat_number])]
 
                 df = check_source(df, alpha, delta, keys)
-                print(df.empty)
+                if df.empty is True:
+                    print('wrong')
 
                 source_d['DITHER'].append(dither)
 

@@ -54,7 +54,7 @@ def get_cat(ccd):
     """
     cats = []
     cat_n = 0
-    idx = 0
+    idx = 1
 
     for x_ in range(1, 7, 1):
         for y_ in range(1, 7, 1):
