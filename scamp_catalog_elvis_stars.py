@@ -148,7 +148,7 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                 index = check_distance(sex_df, alpha, delta)
                 sex_df = sex_df.iloc[[index]]
 
-                cat_number = sex_df['CATALOG_NUMBER'].iloc([0])
+                cat_number = sex_df['CATALOG_NUMBER'].iloc[0]
                 print(cat_number, type(cat_number))
                 df = scamp_df[scamp_df['CATALOG_NUMBER'].isin([cat_number])]
                 print(df)
