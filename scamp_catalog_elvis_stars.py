@@ -5,12 +5,7 @@
 of single CCDs images.
 
 Versions:
-- 0.1: Initial release. Split from check.py
-       Recreated for ELViS analysis pipeline.
-- 0.2: Single input catalogue and multiple input catalogues added.
-- 0.3: Check method for catalogue creation added.
-- 0.4: Easiest way implemented. Rewritten.
-- 0.5: Now can saves catalogues by dither.
+- 0.1: Initial release.
 
 Information:
 -
@@ -30,12 +25,13 @@ from sys import stdout
 from pandas import concat, DataFrame, read_csv
 
 from misc_cats import extract_cats_d, create_full_cats, extract_stars_df
+from misc_cats import create_scamp_df
 from misc import extract_settings_elvis, check_distance, check_source
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
 __credits__ = ["Samuel Góngora García"]
-__version__ = "0.5"
+__version__ = "0.1"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
@@ -50,7 +46,7 @@ def create_empty_catalog_dict():
              'MAG_AUTO': [], 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
              'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
              'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [],
-             'CLASS_STAR': []}
+             'CLASS_STAR': [], 'PM': []}
 
     return cat_d
 
@@ -60,10 +56,12 @@ def create_catalog():
 
     :return:
     """
+    stars_df = extract_stars_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
-    stars_df = extract_stars_df()
-    save = True
+    scamp_df = create_scamp_df()
+
+    print(scamp_df)
 
     unique_sources = stars_df['IDX']
     total_stars = stars_df['IDX'].size
@@ -83,7 +81,8 @@ def create_catalog():
     areas_j = []
     for idx_l in range(0, 18, 1):
         areas_p = Process(target=create_stars_catalog_thread,
-                          args=(idx_l, sub_list_l[idx_l], stars_df, full_d))
+                          args=(idx_l, sub_list_l[idx_l],
+                                stars_df, full_d, scamp_df))
         areas_j.append(areas_p)
         areas_p.start()
 
@@ -101,14 +100,12 @@ def create_catalog():
         stars_list.append(stars_)
 
     stars_df = concat(stars_list)
-
-    if save:
-        stars_df.to_csv('catalogues_detected/stars.csv')
+    stars_df.to_csv('catalogues_detected/stars.csv')
 
     return stars_df
 
 
-def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
+def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
     """
 
     :param idx_l:
@@ -130,55 +127,56 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d):
 
         source_d = create_empty_catalog_dict()
         for dither in range(1, 5, 1):
-            o_df = check_source(full_d[dither], alpha, delta, keys)
+            sex_df = check_source(full_d[dither], alpha, delta, keys)
+            scamp_df = check_source(df, alpha, delta, keys)
             # Should check source in Scamp too!
-            if o_df.empty is not True:
+            if sex_df.empty is not True and scamp_df.empty is not True:
                 # Returns the index of the closest found source
-                index = check_distance(o_df, alpha, delta)
-                o_df = o_df.iloc[[index]]
+                index = check_distance(sex_df, alpha, delta)
+                sex_df = sex_df.iloc[[index]]
 
                 source_d['DITHER'].append(dither)
 
-                catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
+                catalog_number = int(sex_df['CATALOG_NUMBER'].iloc[0])
                 source_d['CATALOG_NUMBER'].append(catalog_number)
 
-                x_world = float(o_df['X_WORLD'].iloc[0])
+                x_world = float(sex_df['X_WORLD'].iloc[0])
                 source_d['X_WORLD'].append(x_world)
 
-                y_world = float(o_df['Y_WORLD'].iloc[0])
+                y_world = float(sex_df['Y_WORLD'].iloc[0])
                 source_d['Y_WORLD'].append(y_world)
 
-                mag_auto = float(o_df['MAG_AUTO'].iloc[0])
+                mag_auto = float(sex_df['MAG_AUTO'].iloc[0])
                 source_d['MAG_AUTO'].append(mag_auto)
 
-                magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
+                magerr_auto = float(sex_df['MAGERR_AUTO'].iloc[0])
                 source_d['MAGERR_AUTO'].append(magerr_auto)
 
-                a_image = float(o_df['A_IMAGE'].iloc[0])
+                a_image = float(sex_df['A_IMAGE'].iloc[0])
                 source_d['A_IMAGE'].append(a_image)
 
-                b_image = float(o_df['B_IMAGE'].iloc[0])
+                b_image = float(sex_df['B_IMAGE'].iloc[0])
                 source_d['B_IMAGE'].append(b_image)
 
-                theta_image = float(o_df['THETA_IMAGE'].iloc[0])
+                theta_image = float(sex_df['THETA_IMAGE'].iloc[0])
                 source_d['THETA_IMAGE'].append(theta_image)
 
-                erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
+                erra_image = float(sex_df['ERRA_IMAGE'].iloc[0])
                 source_d['ERRA_IMAGE'].append(erra_image)
 
-                errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
+                errb_image = float(sex_df['ERRB_IMAGE'].iloc[0])
                 source_d['ERRB_IMAGE'].append(errb_image)
 
-                erra_world = float(o_df['ERRA_WORLD'].iloc[0])
+                erra_world = float(sex_df['ERRA_WORLD'].iloc[0])
                 source_d['ERRA_WORLD'].append(erra_world)
 
-                errb_world = float(o_df['ERRB_WORLD'].iloc[0])
+                errb_world = float(sex_df['ERRB_WORLD'].iloc[0])
                 source_d['ERRB_WORLD'].append(errb_world)
 
-                errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
+                errtheta_world = float(sex_df['ERRTHETA_WORLD'].iloc[0])
                 source_d['ERRTHETA_WORLD'].append(errtheta_world)
 
-                class_star = float(o_df['CLASS_STAR'].iloc[0])
+                class_star = float(sex_df['CLASS_STAR'].iloc[0])
                 source_d['CLASS_STAR'].append(class_star)
 
         if len(source_d['DITHER']) != 0:

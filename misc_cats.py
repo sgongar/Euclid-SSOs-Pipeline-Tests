@@ -207,3 +207,19 @@ def extract_ssos_df():
     ssos_df['SOURCE'] = ssos_source
 
     return ssos_df
+
+
+def create_scamp_df():
+    """
+
+    :return: scamp_df
+    """
+    prfs_dict = extract_settings_elvis()
+
+    filter_dir = prfs_dict['filtered']
+    filt_n = 'filt_'
+    filter_o_n = '{}/{}'.format(filter_dir, filt_n)
+
+    scamp_df = read_csv('{}_2.csv'.format(filter_o_n), index_col=0)
+
+    return scamp_df
