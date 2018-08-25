@@ -150,10 +150,10 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
 
                 cat_number = sex_df['CATALOG_NUMBER'].iloc([0])
                 df = scamp_df[scamp_df['CATALOG_NUMBER'].isin([cat_number])]
+                print(df)
 
-                df = check_source(df, alpha, delta, keys)
-
-                print(df.empty)
+                # df = check_source(df, alpha, delta, keys)
+                # print(df.empty)
 
                 source_d['DITHER'].append(dither)
 
