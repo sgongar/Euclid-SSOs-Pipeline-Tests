@@ -54,17 +54,6 @@ def get_cat(cat_n):
     return cats[cat_n]
 
 
-def test_function(scamp_df):
-    """
-    """
-    print(scamp_df.columns)
-    from misc_cats import get_dither
-    dither_n = get_dither(1)
-    print(dither_n)
-    dither_n = get_dither(2)
-    print(dither_n)
-
-
 def create_empty_catalog_dict():
     """
 
@@ -88,8 +77,6 @@ def create_catalog():
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
     scamp_df = create_scamp_df()
-
-    # test_function(scamp_df)
 
     unique_sources = stars_df['IDX']
     total_stars = stars_df['IDX'].size
@@ -157,12 +144,14 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
             sex_df = check_source(full_d[dither], alpha, delta, keys)
             # scamp_df = check_source(df, alpha, delta, keys)
             # Should check source in Scamp too!
-            if sex_df.empty is not True and scamp_df.empty is not True:
+            if sex_df.empty is not True:
                 # Returns the index of the closest found source
                 index = check_distance(sex_df, alpha, delta)
                 sex_df = sex_df.iloc[[index]]
 
-                print(sex_df['CATALOG_NUMBER'].iloc[0])
+                catalog_number = sex_df['CATALOG_NUMBER'].iloc([0])
+
+                print(scamp_df['CATALOG_NUMBER'].isin([catalog_number]))
 
                 source_d['DITHER'].append(dither)
 
