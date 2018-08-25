@@ -73,7 +73,7 @@ def test_function():
         # self.logger.debug('CCD catalog {} to Pandas'.format(cat_n))
         cat_d[cat_n] = ccd_df.to_pandas()
 
-    print(cat_n)
+    print(cat_d)
 
 
 def create_empty_catalog_dict():
