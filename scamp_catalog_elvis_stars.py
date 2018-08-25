@@ -24,9 +24,9 @@ from sys import stdout
 
 from pandas import concat, DataFrame, read_csv
 
+from misc import extract_settings_elvis, check_distance, check_source
 from misc_cats import extract_cats_d, create_full_cats, extract_stars_df
 from misc_cats import create_scamp_df
-from misc import extract_settings_elvis, check_distance, check_source
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
@@ -35,23 +35,6 @@ __version__ = "0.1"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
-
-
-def get_cat(cat_n):
-    """
-
-    :param cat_n:
-    :return: cat_file
-    """
-    cats = ['empty_cat']
-
-    for x_ in range(1, 7, 1):
-        for y_ in range(1, 7, 1):
-            for d_ in range(1, 5, 1):
-                cat_name = 'CCD_x{}_y{}_d{}.cat'.format(x_, y_, d_)
-                cats.append(cat_name)
-
-    return cats[cat_n]
 
 
 def create_empty_catalog_dict():
@@ -94,17 +77,17 @@ def create_catalog():
             idx_down = sub_list_size * idx_sub_list
             sub_list_l.append(unique_sources[idx_down:])
 
-    areas_j = []
+    extract_j = []
     for idx_l in range(0, 18, 1):
-        areas_p = Process(target=create_stars_catalog_thread,
-                          args=(idx_l, sub_list_l[idx_l],
-                                stars_df, full_d, scamp_df))
-        areas_j.append(areas_p)
-        areas_p.start()
+        extract_p = Process(target=create_stars_catalog_thread,
+                            args=(idx_l, sub_list_l[idx_l],
+                                  stars_df, full_d, scamp_df))
+        extract_j.append(extract_p)
+        extract_p.start()
 
-    active_areas = list([job.is_alive() for job in areas_j])
-    while True in active_areas:
-        active_areas = list([job.is_alive() for job in areas_j])
+    active_extract = list([job.is_alive() for job in extract_j])
+    while True in active_extract:
+        active_extract = list([job.is_alive() for job in extract_j])
         pass
 
     # Merges areas
@@ -116,7 +99,7 @@ def create_catalog():
         stars_list.append(stars_)
 
     stars_df = concat(stars_list)
-    stars_df.to_csv('catalogues_detected/stars.csv')
+    stars_df.to_csv('catalogues_detected/scamp_stars.csv')
 
     return stars_df
 

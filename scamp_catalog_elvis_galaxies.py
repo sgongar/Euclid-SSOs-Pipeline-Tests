@@ -26,6 +26,7 @@ from pandas import concat, DataFrame, read_csv
 
 from misc import check_distance, check_source, extract_settings_elvis
 from misc_cats import extract_cats_d, create_full_cats, extract_galaxies_df
+from misc_cats import create_scamp_df
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
@@ -34,9 +35,6 @@ __version__ = "0.1"
 __maintainer__ = "Samuel Góngora García"
 __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
-
-
-
 
 
 def create_empty_catalog_dict():
@@ -48,7 +46,7 @@ def create_empty_catalog_dict():
              'MAG_AUTO': [], 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
              'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
              'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [],
-             'CLASS_STAR': []}
+             'CLASS_STAR': [], 'PM': []}
 
     return cat_d
 
@@ -58,10 +56,11 @@ def create_catalog():
 
     :return:
     """
+    galaxies_df = extract_galaxies_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
-    galaxies_df = extract_galaxies_df()
-    save = True
+
+    scamp_df = create_scamp_df()
 
     unique_sources = galaxies_df['IDX']
     total_galaxies = galaxies_df['IDX'].size
@@ -78,16 +77,17 @@ def create_catalog():
             idx_down = sub_list_size * idx_sub_list
             sub_list_l.append(unique_sources[idx_down:])
 
-    areas_j = []
+    extract_j = []
     for idx_l in range(0, 18, 1):
-        areas_p = Process(target=create_galaxies_catalog_thread,
-                          args=(idx_l, sub_list_l[idx_l], galaxies_df, full_d))
-        areas_j.append(areas_p)
-        areas_p.start()
+        extract_p = Process(target=create_galaxies_catalog_thread,
+                            args=(idx_l, sub_list_l[idx_l], galaxies_df,
+                                  full_d, scamp_df))
+        extract_j.append(extract_p)
+        extract_p.start()
 
-    active_areas = list([job.is_alive() for job in areas_j])
-    while True in active_areas:
-        active_areas = list([job.is_alive() for job in areas_j])
+    active_extract = list([job.is_alive() for job in extract_j])
+    while True in active_extract:
+        active_extract = list([job.is_alive() for job in extract_j])
         pass
 
     # Merges areas
@@ -99,14 +99,13 @@ def create_catalog():
         galaxies_list.append(galaxies_)
 
     galaxies_df = concat(galaxies_list)
-
-    if save:
-        galaxies_df.to_csv('catalogues_detected/galaxies.csv')
+    galaxies_df.to_csv('catalogues_detected/galaxies.csv')
 
     return galaxies_df
 
 
-def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df, full_d):
+def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df,
+                                   full_d, scamp_df):
     """
 
     :param idx_l:
@@ -115,7 +114,6 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df, full_d):
     :param full_d:
     :return:
     """
-    save = True
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
     cat_d = create_empty_catalog_dict()
@@ -129,55 +127,64 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df, full_d):
 
         source_d = create_empty_catalog_dict()
         for dither in range(1, 5, 1):
-            o_df = check_source(full_d[dither], alpha, delta, keys)
+            sex_df = check_source(full_d[dither], alpha, delta, keys)
             # Should check source in Scamp too!
-            if o_df.empty is not True:
+            if sex_df.empty is not True:
                 # Returns the index of the closest found source
-                index = check_distance(o_df, alpha, delta)
-                o_df = o_df.iloc[[index]]
-                source_d['DITHER'].append(dither)
+                index = check_distance(sex_df, alpha, delta)
+                sex_df = sex_df.iloc[[index]]
 
-                catalog_number = int(o_df['CATALOG_NUMBER'].iloc[0])
-                source_d['CATALOG_NUMBER'].append(catalog_number)
+                cat_number = sex_df['CATALOG_NUMBER'].iloc[0]
+                df = scamp_df[scamp_df['CATALOG_NUMBER'].isin([cat_number])]
 
-                x_world = float(o_df['X_WORLD'].iloc[0])
-                source_d['X_WORLD'].append(x_world)
+                df = check_source(df, alpha, delta, keys)
+                if df.empty is not True:
+                    source_d['DITHER'].append(dither)
 
-                y_world = float(o_df['Y_WORLD'].iloc[0])
-                source_d['Y_WORLD'].append(y_world)
+                    catalog_number = int(sex_df['CATALOG_NUMBER'].iloc[0])
+                    source_d['CATALOG_NUMBER'].append(catalog_number)
 
-                mag_auto = float(o_df['MAG_AUTO'].iloc[0])
-                source_d['MAG_AUTO'].append(mag_auto)
+                    x_world = float(sex_df['X_WORLD'].iloc[0])
+                    source_d['X_WORLD'].append(x_world)
 
-                magerr_auto = float(o_df['MAGERR_AUTO'].iloc[0])
-                source_d['MAGERR_AUTO'].append(magerr_auto)
+                    y_world = float(sex_df['Y_WORLD'].iloc[0])
+                    source_d['Y_WORLD'].append(y_world)
 
-                a_image = float(o_df['A_IMAGE'].iloc[0])
-                source_d['A_IMAGE'].append(a_image)
+                    mag_auto = float(sex_df['MAG_AUTO'].iloc[0])
+                    source_d['MAG_AUTO'].append(mag_auto)
 
-                b_image = float(o_df['B_IMAGE'].iloc[0])
-                source_d['B_IMAGE'].append(b_image)
+                    magerr_auto = float(sex_df['MAGERR_AUTO'].iloc[0])
+                    source_d['MAGERR_AUTO'].append(magerr_auto)
 
-                theta_image = float(o_df['THETA_IMAGE'].iloc[0])
-                source_d['THETA_IMAGE'].append(theta_image)
+                    a_image = float(sex_df['A_IMAGE'].iloc[0])
+                    source_d['A_IMAGE'].append(a_image)
 
-                erra_image = float(o_df['ERRA_IMAGE'].iloc[0])
-                source_d['ERRA_IMAGE'].append(erra_image)
+                    b_image = float(sex_df['B_IMAGE'].iloc[0])
+                    source_d['B_IMAGE'].append(b_image)
 
-                errb_image = float(o_df['ERRB_IMAGE'].iloc[0])
-                source_d['ERRB_IMAGE'].append(errb_image)
+                    theta_image = float(sex_df['THETA_IMAGE'].iloc[0])
+                    source_d['THETA_IMAGE'].append(theta_image)
 
-                erra_world = float(o_df['ERRA_WORLD'].iloc[0])
-                source_d['ERRA_WORLD'].append(erra_world)
+                    erra_image = float(sex_df['ERRA_IMAGE'].iloc[0])
+                    source_d['ERRA_IMAGE'].append(erra_image)
 
-                errb_world = float(o_df['ERRB_WORLD'].iloc[0])
-                source_d['ERRB_WORLD'].append(errb_world)
+                    errb_image = float(sex_df['ERRB_IMAGE'].iloc[0])
+                    source_d['ERRB_IMAGE'].append(errb_image)
 
-                errtheta_world = float(o_df['ERRTHETA_WORLD'].iloc[0])
-                source_d['ERRTHETA_WORLD'].append(errtheta_world)
+                    erra_world = float(sex_df['ERRA_WORLD'].iloc[0])
+                    source_d['ERRA_WORLD'].append(erra_world)
 
-                class_star = float(o_df['CLASS_STAR'].iloc[0])
-                source_d['CLASS_STAR'].append(class_star)
+                    errb_world = float(sex_df['ERRB_WORLD'].iloc[0])
+                    source_d['ERRB_WORLD'].append(errb_world)
+
+                    errtheta_world = float(sex_df['ERRTHETA_WORLD'].iloc[0])
+                    source_d['ERRTHETA_WORLD'].append(errtheta_world)
+
+                    class_star = float(sex_df['CLASS_STAR'].iloc[0])
+                    source_d['CLASS_STAR'].append(class_star)
+
+                    pm = float(df['PM'].iloc[0])
+                    source_d['PM'].append(pm)
 
         if len(source_d['DITHER']) != 0:
             for key_ in source_d.keys():
@@ -193,9 +200,8 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df, full_d):
                                        'THETA_IMAGE', 'ERRA_IMAGE',
                                        'ERRB_IMAGE', 'ERRA_WORLD',
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
-                                       'CLASS_STAR'])
-    if save:
-        cat_df.to_csv('tmp_galaxies/galaxies_{}.csv'.format(idx_l))
+                                       'CLASS_STAR', 'PM'])
+    cat_df.to_csv('tmp_galaxies/galaxies_{}.csv'.format(idx_l))
 
 
 if __name__ == "__main__":
