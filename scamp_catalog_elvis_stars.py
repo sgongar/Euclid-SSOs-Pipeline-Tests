@@ -132,6 +132,9 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
     """
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
+    ok = 0
+    no = 0
+
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
@@ -154,7 +157,9 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
 
                 df = check_source(df, alpha, delta, keys)
                 if df.empty is True:
-                    print('wrong')
+                    no += 1
+                else:
+                    ok += 1
 
                 source_d['DITHER'].append(dither)
 
@@ -213,6 +218,8 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
                                        'CLASS_STAR'])
     cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
+
+    print('ok {} - no {}'.format(ok, no))
 
 
 if __name__ == "__main__":
