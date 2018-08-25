@@ -140,6 +140,7 @@ def extract_cats_d():
             cats_d[dither][cat_name] = cat_df
 
             cat_list = [cat_number] * cat_df['NUMBER'].size
+            print(cat_list)
             cats_d[dither][cat_name]['CATALOG_NUMBER'] = cat_list
 
     return cats_d
