@@ -132,9 +132,6 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
     """
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
-    ok = 0
-    no = 0
-
     cat_d = create_empty_catalog_dict()
     total_thread = len(sub_list)
     stdout.write('total stars {} of thread {}\n'.format(total_thread, idx_l))
@@ -156,72 +153,68 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                 df = scamp_df[scamp_df['CATALOG_NUMBER'].isin([cat_number])]
 
                 df = check_source(df, alpha, delta, keys)
-                if df.empty is True:
-                    no += 1
-                else:
-                    ok += 1
+                if df.empty is not True:
+                    source_d['DITHER'].append(dither)
 
-                source_d['DITHER'].append(dither)
+                    catalog_number = int(sex_df['CATALOG_NUMBER'].iloc[0])
+                    source_d['CATALOG_NUMBER'].append(catalog_number)
 
-                catalog_number = int(sex_df['CATALOG_NUMBER'].iloc[0])
-                source_d['CATALOG_NUMBER'].append(catalog_number)
+                    x_world = float(sex_df['X_WORLD'].iloc[0])
+                    source_d['X_WORLD'].append(x_world)
 
-                x_world = float(sex_df['X_WORLD'].iloc[0])
-                source_d['X_WORLD'].append(x_world)
+                    y_world = float(sex_df['Y_WORLD'].iloc[0])
+                    source_d['Y_WORLD'].append(y_world)
 
-                y_world = float(sex_df['Y_WORLD'].iloc[0])
-                source_d['Y_WORLD'].append(y_world)
+                    mag_auto = float(sex_df['MAG_AUTO'].iloc[0])
+                    source_d['MAG_AUTO'].append(mag_auto)
 
-                mag_auto = float(sex_df['MAG_AUTO'].iloc[0])
-                source_d['MAG_AUTO'].append(mag_auto)
+                    magerr_auto = float(sex_df['MAGERR_AUTO'].iloc[0])
+                    source_d['MAGERR_AUTO'].append(magerr_auto)
 
-                magerr_auto = float(sex_df['MAGERR_AUTO'].iloc[0])
-                source_d['MAGERR_AUTO'].append(magerr_auto)
+                    a_image = float(sex_df['A_IMAGE'].iloc[0])
+                    source_d['A_IMAGE'].append(a_image)
 
-                a_image = float(sex_df['A_IMAGE'].iloc[0])
-                source_d['A_IMAGE'].append(a_image)
+                    b_image = float(sex_df['B_IMAGE'].iloc[0])
+                    source_d['B_IMAGE'].append(b_image)
 
-                b_image = float(sex_df['B_IMAGE'].iloc[0])
-                source_d['B_IMAGE'].append(b_image)
+                    theta_image = float(sex_df['THETA_IMAGE'].iloc[0])
+                    source_d['THETA_IMAGE'].append(theta_image)
 
-                theta_image = float(sex_df['THETA_IMAGE'].iloc[0])
-                source_d['THETA_IMAGE'].append(theta_image)
+                    erra_image = float(sex_df['ERRA_IMAGE'].iloc[0])
+                    source_d['ERRA_IMAGE'].append(erra_image)
 
-                erra_image = float(sex_df['ERRA_IMAGE'].iloc[0])
-                source_d['ERRA_IMAGE'].append(erra_image)
+                    errb_image = float(sex_df['ERRB_IMAGE'].iloc[0])
+                    source_d['ERRB_IMAGE'].append(errb_image)
 
-                errb_image = float(sex_df['ERRB_IMAGE'].iloc[0])
-                source_d['ERRB_IMAGE'].append(errb_image)
+                    erra_world = float(sex_df['ERRA_WORLD'].iloc[0])
+                    source_d['ERRA_WORLD'].append(erra_world)
 
-                erra_world = float(sex_df['ERRA_WORLD'].iloc[0])
-                source_d['ERRA_WORLD'].append(erra_world)
+                    errb_world = float(sex_df['ERRB_WORLD'].iloc[0])
+                    source_d['ERRB_WORLD'].append(errb_world)
 
-                errb_world = float(sex_df['ERRB_WORLD'].iloc[0])
-                source_d['ERRB_WORLD'].append(errb_world)
+                    errtheta_world = float(sex_df['ERRTHETA_WORLD'].iloc[0])
+                    source_d['ERRTHETA_WORLD'].append(errtheta_world)
 
-                errtheta_world = float(sex_df['ERRTHETA_WORLD'].iloc[0])
-                source_d['ERRTHETA_WORLD'].append(errtheta_world)
+                    class_star = float(sex_df['CLASS_STAR'].iloc[0])
+                    source_d['CLASS_STAR'].append(class_star)
 
-                class_star = float(sex_df['CLASS_STAR'].iloc[0])
-                source_d['CLASS_STAR'].append(class_star)
+                    pm = float(df['PM'].iloc[0])
+                    source_d['PM'].append(pm)
 
         if len(source_d['DITHER']) != 0:
             for key_ in source_d.keys():
                 for value_ in source_d[key_]:
                     cat_d[key_].append(value_)
 
-    print('ok {} - no {}'.format(ok, no))
-
-    """
     cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER',
                                        'X_WORLD', 'Y_WORLD', 'MAG_AUTO',
                                        'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
                                        'THETA_IMAGE', 'ERRA_IMAGE',
                                        'ERRB_IMAGE', 'ERRA_WORLD',
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
-                                       'CLASS_STAR'])
+                                       'CLASS_STAR', 'PM'])
     cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
-    """
+
 
 if __name__ == "__main__":
     prfs_dict = extract_settings_elvis()
