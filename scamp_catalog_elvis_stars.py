@@ -212,6 +212,7 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
 
     print('ok {} - no {}'.format(ok, no))
 
+    """
     cat_df = DataFrame(cat_d, columns=['DITHER', 'CATALOG_NUMBER',
                                        'X_WORLD', 'Y_WORLD', 'MAG_AUTO',
                                        'MAGERR_AUTO', 'A_IMAGE', 'B_IMAGE',
@@ -220,7 +221,7 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
                                        'CLASS_STAR'])
     cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
-
+    """
 
 if __name__ == "__main__":
     prfs_dict = extract_settings_elvis()
