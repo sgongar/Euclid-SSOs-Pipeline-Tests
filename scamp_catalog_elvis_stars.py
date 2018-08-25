@@ -37,6 +37,45 @@ __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
 
 
+def get_cat(self, cat_n):
+    """
+
+    :param cat_n:
+    :return: cat_file
+    """
+    cats = ['empty_cat']
+
+    for x_ in range(1, 7, 1):
+        for y_ in range(1, 7, 1):
+            for d_ in range(1, 5, 1):
+                cat_name = 'CCD_x{}_y{}_d{}.cat'.format(x_, y_, d_)
+                cats.append(cat_name)
+
+    return cats[cat_n]
+
+
+def test_function():
+    """
+    """
+    from astropy.io import fits
+    from astropy.table import Table
+
+    prfs_dict = extract_settings_elvis()
+
+    cats_number = 144
+    cat_d = {}
+    for cat_n in range(1, cats_number + 1, 1):
+        cat_file = get_cat(cat_n)
+        cat_data = fits.open('{}/{}'.format(prfs_dict['fits_dir'],
+                                            cat_file))
+
+        ccd_df = Table(cat_data[2].data)
+        # self.logger.debug('CCD catalog {} to Pandas'.format(cat_n))
+        cat_d[cat_n] = ccd_df.to_pandas()
+
+    print(cat_n)
+
+
 def create_empty_catalog_dict():
     """
 
@@ -56,6 +95,9 @@ def create_catalog():
 
     :return:
     """
+    test_function()
+
+    raise Exception
     stars_df = extract_stars_df()
     cats_d = extract_cats_d()  # extracts dataframes from catalogues
     full_d = create_full_cats(cats_d)  # creates dataframe from CCDs catalogues
@@ -114,7 +156,6 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
     :param full_d:
     :return:
     """
-    save = True
     keys = ['ALPHA_J2000', 'DELTA_J2000']
 
     cat_d = create_empty_catalog_dict()
@@ -191,8 +232,7 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
                                        'ERRB_IMAGE', 'ERRA_WORLD',
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
                                        'CLASS_STAR'])
-    if save:
-        cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
+    cat_df.to_csv('tmp_stars/stars_{}.csv'.format(idx_l))
 
 
 if __name__ == "__main__":
