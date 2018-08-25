@@ -58,7 +58,11 @@ def test_function(scamp_df):
     """
     """
     print(scamp_df.columns)
-
+    from misc_cats import get_dither
+    dither_n = get_dither(1)
+    print(dither_n)
+    dither_n = get_dither(2)
+    print(dither_n)
 
 
 def create_empty_catalog_dict():
