@@ -136,11 +136,12 @@ def extract_cats_d():
             cat_data = Table(hdu_list[2].data)
             cat_df = cat_data.to_pandas()  # Converts to Pandas format
             cat_number = get_cat(cat_name)  # Gets cat's number from cat's name
-            print(cat_number, cat_name)
+            if cat_number == 0:
+                print(cat_number, cat_name)
             cats_d[dither][cat_name] = cat_df
 
             cat_list = [cat_number] * cat_df['NUMBER'].size
-            print(cat_list)
+            # print(cat_list)
             cats_d[dither][cat_name]['CATALOG_NUMBER'] = cat_list
 
     return cats_d
