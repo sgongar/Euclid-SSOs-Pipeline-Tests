@@ -99,7 +99,7 @@ def create_catalog():
         galaxies_list.append(galaxies_)
 
     galaxies_df = concat(galaxies_list)
-    galaxies_df.to_csv('catalogues_detected/galaxies.csv')
+    galaxies_df.to_csv('catalogues_detected/scamp_galaxies.csv')
 
     return galaxies_df
 
