@@ -155,13 +155,14 @@ def create_stars_catalog_thread(idx_l, sub_list, stars_df, full_d, scamp_df):
         source_d = create_empty_catalog_dict()
         for dither in range(1, 5, 1):
             sex_df = check_source(full_d[dither], alpha, delta, keys)
-            print(sex_df['CATALOG_NUMBER'].iloc[0])
             # scamp_df = check_source(df, alpha, delta, keys)
             # Should check source in Scamp too!
             if sex_df.empty is not True and scamp_df.empty is not True:
                 # Returns the index of the closest found source
                 index = check_distance(sex_df, alpha, delta)
                 sex_df = sex_df.iloc[[index]]
+
+                print(sex_df['CATALOG_NUMBER'].iloc[0])
 
                 source_d['DITHER'].append(dither)
 
