@@ -37,7 +37,7 @@ __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
 
 
-def get_cat(self, cat_n):
+def get_cat(cat_n):
     """
 
     :param cat_n:
