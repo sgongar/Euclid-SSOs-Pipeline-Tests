@@ -333,7 +333,7 @@ class FactorsScampPerformance:
         presentes en filt 3 obtenidos o no
 
         """
-        self.filter_p_number = 9  # First one with enough data for statistics
+        self.filter_p_number = 3  # First one with enough data for statistics
         self.prfs_d = extract_settings_elvis()
         self.data_d = redo_data_d()
         factors_d = redo_factors_d()

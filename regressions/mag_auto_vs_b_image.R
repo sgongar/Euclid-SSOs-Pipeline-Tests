@@ -31,7 +31,7 @@ out <- ggplot(data = SSOsDataFrame, aes(x = MAG_AUTO, y = B_IMAGE)) +
               theme_bw() +
               theme(plot.title = element_text(hjust = 0.5))
 
-# print(out)
+print(out)
 
 modelo_poli5 <- lm(B_IMAGE ~ poly(MAG_AUTO, 5, raw=TRUE), data = SSOsDataFrame)
 # print(summary(modelo_poli5))
@@ -45,7 +45,8 @@ out_2 <- ggplot(mpi, aes(x = SSOsDataFrame$MAG_AUTO)) +
 # print(summary(mpi$fit))
 # print(out_2)
 
-out_3 <- predict(modelo_poli5, se.fit = TRUE, scale = NULL, df = Inf,
+new.MAG_AUTO <- data.frame(wt=c(1.7, 2.4, 3.6))
+out_3 <- predict(modelo_poli5, new_data = SSOsDataFrame$MAG_AUTO, se.fit = TRUE, scale = NULL, df = Inf,
                  interval = c("prediction"), level = 0.95, type = c("response"))
 # print(summary(out_3))
 out_matrix <- out_3$fit
