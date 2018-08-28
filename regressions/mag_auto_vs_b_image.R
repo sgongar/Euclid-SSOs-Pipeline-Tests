@@ -62,6 +62,3 @@ upr_limit = lm(upr_list ~ poly(SSOsDataFrame$MAG_AUTO, 4, raw=TRUE))
 lwr_limit = lm(lwr_list ~ poly(SSOsDataFrame$MAG_AUTO, 4, raw=TRUE))
 print(lwr_limit$coefficients)
 # plot(SSOsDataFrame$MAG_AUTO, lwr_list)
-
-
-plot(StarsDataFrame$MAG_AUTO, StarsDataFrame$B_IMAGE)
