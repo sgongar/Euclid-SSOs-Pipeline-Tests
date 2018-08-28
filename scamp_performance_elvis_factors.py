@@ -389,7 +389,8 @@ class FactorsScampPerformance:
             # Takes the first value of PM Series
             o_pm_norm = get_norm_speed(source_df['PM'].iloc[0])
 
-            print(o_pm_norm)
+            if o_mag_bin == '20-21' and o_pm_norm == 0.1:
+                print('Dentro')
 
             source_d = {'source': [], 'pm': [], 'mag': []}
             right_detections = 0
@@ -411,7 +412,7 @@ class FactorsScampPerformance:
                     false_positives[dither_n]['RA'].append(alpha)
                     false_positives[dither_n]['DEC'].append(delta)
 
-            if right_detections >= 4:
+            if right_detections >= 3:
                 i_mag_bin = get_norm_mag(source_d['mag'][0])
                 i_pm_norm = get_norm_speed(source_d['pm'][0])
                 if i_mag_bin == '24-25' and i_pm_norm == 1.0:
