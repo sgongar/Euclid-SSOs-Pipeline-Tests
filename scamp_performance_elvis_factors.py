@@ -389,6 +389,8 @@ class FactorsScampPerformance:
             # Takes the first value of PM Series
             o_pm_norm = get_norm_speed(source_df['PM'].iloc[0])
 
+            print(o_pm_norm)
+
             source_d = {'source': [], 'pm': [], 'mag': []}
             right_detections = 0
             for i, row in enumerate(source_df.itertuples(), 1):
