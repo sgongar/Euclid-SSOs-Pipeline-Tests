@@ -21,3 +21,4 @@ tmp_stars/*.csv
 ### Regressions ###
 regressions/.Rproj.user/*
 regressions/.RData
+.Rproj.user
