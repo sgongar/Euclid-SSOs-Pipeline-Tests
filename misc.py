@@ -16,10 +16,10 @@ from math import hypot
 
 from multiprocessing import cpu_count
 from ConfigParser import ConfigParser
-from platform import platform
+import platform
 from logging import getLogger, config
 
-from errors import BadSettings, InvalidScampConfiguration
+from errors import BadSettings, InvalidScampConfiguration, WrongOS
 from project_warnings import TooFastSource
 
 __author__ = "Samuel Góngora García"
@@ -204,10 +204,13 @@ def get_os():
 
     @return os_system: a string which contains the operative system name
     """
-    if 'fedora-19' in platform() or 'fedora-23' in platform():
+    print('platform {}'.format(platform.platform()))
+    if 'fedora-19' in platform.platform() or 'fedora-23' in platform.platform():
         os_system = 'cab'
-    elif 'centos' in platform():
+    elif 'centos' in platform.platform():
         os_system = 'centos'
+    elif 'wrongOS' in platform.platform():
+        raise WrongOS
     else:
         raise Exception
 

@@ -52,34 +52,7 @@ class TestGetOs(TestCase):
         """
         platform.platform = MagicMock(return_value='fedora-23')
 
-        self.assertIs(misc.get_os(), 'test')
-
-    def test_Debian(self):
-        """
-
-        :return:
-        """
-        platform.platform = MagicMock(return_value='Debian')
-
-        self.assertIs(misc.get_os(), 'debian')
-
-    def test_Ubuntu(self):
-        """
-
-        :return:
-        """
-        platform.platform = MagicMock(return_value='Ubuntu')
-
-        self.assertIs(misc.get_os(), 'ubuntu')
-
-    def test_fedora_26(self):
-        """
-
-        :return:
-        """
-        platform.platform = MagicMock(return_value='fedora-26')
-
-        self.assertIs(misc.get_os(), 'fedora')
+        self.assertIs(misc.get_os(), 'cab')
 
     def test_fedora_19(self):
         """
