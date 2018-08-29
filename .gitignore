@@ -22,3 +22,9 @@ tmp_stars/*.csv
 regressions/.Rproj.user/*
 regressions/.RData
 .Rproj.user
+
+stats*
+
+.idea/*
+
+regressions/.Rhistory

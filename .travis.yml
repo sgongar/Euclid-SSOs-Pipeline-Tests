@@ -13,9 +13,19 @@ script:
   - nosetests test_miscCreateSextractorDict.py
   - nosetests test_miscCreateScampDict.py
   - nosetests test_miscExtractSettingsElvis.py
+  - nosetests test_miscGetNormSpeed.py
+  - nosetests test_miscCreateConfigurations.py
+  - nosetests test_miscCheckSource.py
+  - nosetests test_miscCheckDistance.py
+  - nosetests test_miscGetOs.py
   - coverage run -a test_miscCreateSextractorDict.py
   - coverage run -a test_miscCreateScampDict.py
   - coverage run -a test_miscExtractSettingsElvis.py
+  - coverage run -a test_miscGetNormSpeed.py
+  - coverage run -a test_miscCreateConfigurations.py
+  - coverage run -a test_miscCheckSource.py
+  - coverage run -a test_miscCheckDistance.py
+  - coverage run -a test_miscGetOs.py
 after_success:
   - coverage combine
   - coverage report -m -i --omit '/home/travis/virtualenv/*'

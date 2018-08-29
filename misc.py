@@ -20,6 +20,7 @@ from platform import platform
 from logging import getLogger, config
 
 from errors import BadSettings, InvalidScampConfiguration
+from project_warnings import TooFastSource
 
 __author__ = "Samuel Góngora García"
 __copyright__ = "Copyright 2018"
@@ -35,6 +36,7 @@ def get_norm_speed(o_pm):
 
     :return:
     """
+    pm_norm = 0
     speeds_d = {0.01: [0.005, 0.015], 0.03: [0.015, 0.05],
                 0.1: [0.05, 0.15], 0.3: [0.15, 0.5],
                 1.0: [0.5, 1.5], 3.0: [1.5, 5],
@@ -42,6 +44,8 @@ def get_norm_speed(o_pm):
 
     if o_pm < 0.005:
         pm_norm = 0
+    elif o_pm > 50.0:
+        raise TooFastSource
     else:
         # pm_norm = 0
         for key_ in speeds_d.keys():
@@ -231,77 +235,77 @@ def conf_map(config_, section):
     return dict1
 
 
-def extract_settings_luca():
-    """ creates a dictionary with all the configuration parameters
-        at this moment configuration file location is fixed at main directory
-
-    @return prfs_d: a dictionary which contains all valuable data
-    """
-    cf = ConfigParser()
-    cf.read(".settings.ini")
-
-    prfs_d = {}
-    os_version = get_os()
-
-    if os_version == 'centos':
-        prfs_d['version'] = conf_map(cf, "Version")['centos_version']
-    elif os_version == 'cab':
-        prfs_d['version'] = conf_map(cf, "Version")['cab_version']
-    else:
-        raise BadSettings('Operative system not chosen')
-
-    if os_version == 'centos':
-        prfs_d['home'] = conf_map(cf, "HomeDirs")['centos_home']
-    elif os_version == 'cab':
-        prfs_d['home'] = conf_map(cf, "HomeDirs")['cab_home']
-    else:
-        raise BadSettings('Operative system not chosen')
-
-    prfs_d['fits_dir'] = conf_map(cf, "ImagesDirs")['fits_dir']
-    prfs_d['fits_dir'] = '{}{}'.format(prfs_d['version'], prfs_d['fits_dir'])
-
-    # todo - comment!
-    prfs_d['output_cats'] = conf_map(cf, "CatsDirs")['output_cats']
-    prfs_d['output_cats'] = prfs_d['version'] + prfs_d['output_cats']
-    # todo - comment!
-    prfs_d['references'] = conf_map(cf, "CatsDirs")['references']
-    prfs_d['references'] = prfs_d['version'] + prfs_d['references']
-    # todo - comment!
-    prfs_d['filtered'] = conf_map(cf, "CatsDirs")['filtered']
-    prfs_d['filtered'] = prfs_d['version'] + prfs_d['filtered']
-
-    outputdirs_list = ['conf_scamp', 'conf_sex', 'params_sex', 'neural_sex',
-                       'params_cat', 'logger_config']
-    for conf_ in outputdirs_list:
-        prfs_d[conf_] = conf_map(cf, "ConfigDirs")[conf_]
-        prfs_d[conf_] = prfs_d['home'] + prfs_d[conf_]
-
-    prfs_d['first_star'] = conf_map(cf, "CatsOrganization")['first_star']
-    prfs_d['first_star'] = int(prfs_d['first_star'])
-    prfs_d['first_galaxy'] = conf_map(cf, "CatsOrganization")['first_galaxy']
-    prfs_d['first_galaxy'] = int(prfs_d['first_galaxy'])
-    prfs_d['first_sso'] = conf_map(cf, "CatsOrganization")['first_sso']
-    prfs_d['first_sso'] = int(prfs_d['first_sso'])
-
-    prfs_d['detections'] = int(conf_map(cf, "Misc")['detections'])
-    prfs_d['pm_low'] = float(conf_map(cf, "Misc")['pm_low'])
-    prfs_d['pm_up'] = float(conf_map(cf, "Misc")['pm_up'])
-    pms = conf_map(cf, "Misc")['pms']
-    pms = pms.replace(",", " ")
-    prfs_d['pms'] = [float(x) for x in pms.split()]
-    mags = conf_map(cf, "Misc")['mags']
-    mags = mags.replace(",", " ")
-    prfs_d['mags'] = mags.split()
-    prfs_d['r_fit'] = conf_map(cf, "Misc")['r_fit']
-    prfs_d['cores_number'] = conf_map(cf, "Misc")['cores_number']
-    if prfs_d['cores_number'] == '0':
-        prfs_d['cores_number'] = int(str(cpu_count()))
-        # TODO should leave free at least 20% of processors
-    else:
-        prfs_d['cores_number'] = int(prfs_d['cores_number'])
-    prfs_d['tolerance'] = float(conf_map(cf, "Misc")['tolerance'])
-
-    return prfs_d
+# def extract_settings_luca():
+#     """ creates a dictionary with all the configuration parameters
+#         at this moment configuration file location is fixed at main directory
+#
+#     @return prfs_d: a dictionary which contains all valuable data
+#     """
+#     cf = ConfigParser()
+#     cf.read(".settings.ini")
+#
+#     prfs_d = {}
+#     os_version = get_os()
+#
+#     if os_version == 'centos':
+#         prfs_d['version'] = conf_map(cf, "Version")['centos_version']
+#     elif os_version == 'cab':
+#         prfs_d['version'] = conf_map(cf, "Version")['cab_version']
+#     else:
+#         raise BadSettings('Operative system not chosen')
+#
+#     if os_version == 'centos':
+#         prfs_d['home'] = conf_map(cf, "HomeDirs")['centos_home']
+#     elif os_version == 'cab':
+#         prfs_d['home'] = conf_map(cf, "HomeDirs")['cab_home']
+#     else:
+#         raise BadSettings('Operative system not chosen')
+#
+#     prfs_d['fits_dir'] = conf_map(cf, "ImagesDirs")['fits_dir']
+#     prfs_d['fits_dir'] = '{}{}'.format(prfs_d['version'], prfs_d['fits_dir'])
+#
+#     # todo - comment!
+#     prfs_d['output_cats'] = conf_map(cf, "CatsDirs")['output_cats']
+#     prfs_d['output_cats'] = prfs_d['version'] + prfs_d['output_cats']
+#     # todo - comment!
+#     prfs_d['references'] = conf_map(cf, "CatsDirs")['references']
+#     prfs_d['references'] = prfs_d['version'] + prfs_d['references']
+#     # todo - comment!
+#     prfs_d['filtered'] = conf_map(cf, "CatsDirs")['filtered']
+#     prfs_d['filtered'] = prfs_d['version'] + prfs_d['filtered']
+#
+#     outputdirs_list = ['conf_scamp', 'conf_sex', 'params_sex', 'neural_sex',
+#                        'params_cat', 'logger_config']
+#     for conf_ in outputdirs_list:
+#         prfs_d[conf_] = conf_map(cf, "ConfigDirs")[conf_]
+#         prfs_d[conf_] = prfs_d['home'] + prfs_d[conf_]
+#
+#     prfs_d['first_star'] = conf_map(cf, "CatsOrganization")['first_star']
+#     prfs_d['first_star'] = int(prfs_d['first_star'])
+#     prfs_d['first_galaxy'] = conf_map(cf, "CatsOrganization")['first_galaxy']
+#     prfs_d['first_galaxy'] = int(prfs_d['first_galaxy'])
+#     prfs_d['first_sso'] = conf_map(cf, "CatsOrganization")['first_sso']
+#     prfs_d['first_sso'] = int(prfs_d['first_sso'])
+#
+#     prfs_d['detections'] = int(conf_map(cf, "Misc")['detections'])
+#     prfs_d['pm_low'] = float(conf_map(cf, "Misc")['pm_low'])
+#     prfs_d['pm_up'] = float(conf_map(cf, "Misc")['pm_up'])
+#     pms = conf_map(cf, "Misc")['pms']
+#     pms = pms.replace(",", " ")
+#     prfs_d['pms'] = [float(x) for x in pms.split()]
+#     mags = conf_map(cf, "Misc")['mags']
+#     mags = mags.replace(",", " ")
+#     prfs_d['mags'] = mags.split()
+#     prfs_d['r_fit'] = conf_map(cf, "Misc")['r_fit']
+#     prfs_d['cores_number'] = conf_map(cf, "Misc")['cores_number']
+#     if prfs_d['cores_number'] == '0':
+#         prfs_d['cores_number'] = int(str(cpu_count()))
+#         # TODO should leave free at least 20% of processors
+#     else:
+#         prfs_d['cores_number'] = int(prfs_d['cores_number'])
+#     prfs_d['tolerance'] = float(conf_map(cf, "Misc")['tolerance'])
+#
+#     return prfs_d
 
 
 def extract_settings_elvis():
