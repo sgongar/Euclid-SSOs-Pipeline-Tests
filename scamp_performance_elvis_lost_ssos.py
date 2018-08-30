@@ -353,8 +353,6 @@ class ScampPerformanceLostOnes:
                 i_pm_test = get_norm_speed(pm)
                 i_mag_test = get_norm_mag(mag)
 
-                    # print(source, test_3_0, i_mag_test)
-
                 keys = ['ALPHA_J2000', 'DELTA_J2000']  # Catalogue version 2
                 ccd_df = check_source(scamp_cat, alpha, delta, keys)
                 cats = get_cats(dither_n)
@@ -436,16 +434,12 @@ class ScampPerformanceLostOnes:
 
             if test_1_0 >= 3:
                 total_1_0 += 1
-                print(total_1_0, output)
-                if test >= 3:
-                    print('confirmado')
+
             if test >= 3:
                 mag_norm = get_norm_mag(mag)
                 pm_norm = get_norm_speed(pm)
                 ssos_d[mag_norm][pm_norm] += 1
 
-
-        print(total_1_0)
 
         for mag_key in ['20-21', '21-22', '22-23', '23-24', '24-25', '25-26']:
             for pm_key in [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]:

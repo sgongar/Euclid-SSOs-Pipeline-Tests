@@ -129,18 +129,18 @@ class FalsePositivesScampPerformance:
         self.input_d = extract_inputs_d()
 
         # False positives dictionary
-        self.false_positives = {1: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'PMERR': [], 'CLASS': [],
-                                    'OBJECT': []},
-                                2: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'PMERR': [], 'CLASS': [],
-                                    'OBJECT': []},
-                                3: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'PMERR': [], 'CLASS': [],
-                                    'OBJECT': []},
-                                4: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'PMERR': [], 'CLASS': [],
-                                    'OBJECT': []}}
+        self.false_positives = {1: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []},
+                                2: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []},
+                                3: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []},
+                                4: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []}}
 
         self.save = True
 
@@ -218,6 +218,7 @@ class FalsePositivesScampPerformance:
                 if test_sso.empty is not True:
                     print('ok {}'.format(o_pm_norm/o_pm_err))
                 else:
+                    self.false_positives[dither_n]['SOURCE'].append(source_)
                     self.false_positives[dither_n]['RA'].append(alpha)
                     self.false_positives[dither_n]['DEC'].append(delta)
                     self.false_positives[dither_n]['MAG'].append(o_mag_bin)
@@ -253,6 +254,7 @@ class FalsePositivesScampPerformance:
                 output_pm.to_csv(cat_name, index=False, header=False, sep=" ")
 
         # Catalogue creation
+        source_total_list = []
         dither_total_list = []
         alpha_total_list = []
         delta_total_list = []
@@ -269,6 +271,9 @@ class FalsePositivesScampPerformance:
             delta_list = self.false_positives[dither_]['DEC']
             for delta_ in delta_list:
                 delta_total_list.append(delta_)
+            source_list = self.false_positives[dither_]['SOURCE']
+            for source_ in source_list:
+                source_total_list.append(source_)
             mag_list = self.false_positives[dither_]['MAG']
             for mag_ in mag_list:
                 mag_total_list.append(mag_)
@@ -285,6 +290,7 @@ class FalsePositivesScampPerformance:
             for object_ in object_list:
                 object_total_list.append(object_)
 
+        source_serie = Series(source_total_list, name='SOURCE')
         dither_serie = Series(dither_total_list, name='DITHER')
         alpha_serie = Series(alpha_total_list, name='ALPHA_J2000')
         delta_serie = Series(delta_total_list, name='DELTA_J2000')
@@ -294,7 +300,7 @@ class FalsePositivesScampPerformance:
         class_serie = Series(class_total_list, name='CLASS_STAR')
         object_serie = Series(object_total_list, name='OBJECT')
 
-        output = concat([dither_serie, alpha_serie, delta_serie,
+        output = concat([source_serie, dither_serie, alpha_serie, delta_serie,
                          mag_serie, pm_serie, pmerr_serie, class_serie,
                          object_serie], axis=1)
         for pm_ in [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]:
