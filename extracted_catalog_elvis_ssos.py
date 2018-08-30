@@ -234,7 +234,13 @@ def create_catalog():
         source_df = ssos_df[ssos_df['SOURCE'].isin([source_])]
         median_b_image = median(source_df['B_IMAGE'].tolist())
         median_mag_auto = median(source_df['MAG_AUTO'].tolist())
-        print(source_df['IDX'].size, median_b_image, median_mag_auto)
+        for idx in range(source_df['IDX'].size):
+            median_b_image_list.append(median_b_image)
+            median_mag_auto_list.append(median_mag_auto)
+
+    print(ssos_df['IDX'].size)
+    print(len(median_b_image_list))
+    print(len(median_mag_auto_list))
     ssos_df.to_csv('catalogues_detected/ssos.csv')
 
     return ssos_df
