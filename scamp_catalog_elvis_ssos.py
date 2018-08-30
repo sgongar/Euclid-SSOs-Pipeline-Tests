@@ -51,7 +51,7 @@ def create_output_catalog_dict():
              'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
              'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
              'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [],
-             'CLASS_STAR': []}
+             'CLASS_STAR': [], 'PM': [], 'PMERR': []}
 
     return cat_d
 
@@ -227,7 +227,7 @@ def create_catalog():
         ssos_list.append(ssos_)
 
     ssos_df = concat(ssos_list)
-    ssos_df.to_csv('catalogues_detected/ssos.csv')
+    ssos_df.to_csv('catalogues_detected/scamp__ssos.csv')
 
     return ssos_df
 
@@ -320,13 +320,19 @@ def create_ssos_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 class_star = float(o_df['CLASS_STAR'].iloc[0])
                 cat_d['CLASS_STAR'].append(class_star)
 
+                pm = float(o_df['PM'].iloc[0])
+                cat_d['PM'].append(pm)
+
+                pmerr = float(o_df['PMERR'].iloc[0])
+                cat_d['PMERR'].append(pmerr)
+
     cat_df = DataFrame(cat_d, columns=['IDX', 'SOURCE', 'DITHER', 'RA', 'DEC',
                                        'VEL', 'ABMAG', 'THETA', 'MAG_AUTO',
                                        'A_IMAGE', 'B_IMAGE', 'THETA_IMAGE',
                                        'ERRA_IMAGE', 'ERRB_IMAGE',
                                        'MAGERR_AUTO', 'ERRA_WORLD',
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
-                                       'CLASS_STAR'])
+                                       'CLASS_STAR', 'PM', 'PMERR'])
 
     cat_df.to_csv('tmp_ssos/ssos_{}.csv'.format(idx_l))
 

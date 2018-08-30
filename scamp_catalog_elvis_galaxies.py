@@ -46,7 +46,7 @@ def create_empty_catalog_dict():
              'MAG_AUTO': [], 'A_IMAGE': [], 'B_IMAGE': [], 'THETA_IMAGE': [],
              'ERRA_IMAGE': [], 'ERRB_IMAGE': [], 'MAGERR_AUTO': [],
              'ERRA_WORLD': [], 'ERRB_WORLD': [], 'ERRTHETA_WORLD': [],
-             'CLASS_STAR': [], 'PM': []}
+             'CLASS_STAR': [], 'PM': [], 'PMERR': []}
 
     return cat_d
 
@@ -186,6 +186,9 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df,
                     pm = float(df['PM'].iloc[0])
                     source_d['PM'].append(pm)
 
+                    pmerr = float(df['PMERR'].iloc[0])
+                    source_d['PMERR'].append(pmerr)
+
         if len(source_d['DITHER']) != 0:
             for key_ in source_d.keys():
                 for value_ in source_d[key_]:
@@ -200,7 +203,7 @@ def create_galaxies_catalog_thread(idx_l, sub_list, galaxies_df,
                                        'THETA_IMAGE', 'ERRA_IMAGE',
                                        'ERRB_IMAGE', 'ERRA_WORLD',
                                        'ERRB_WORLD', 'ERRTHETA_WORLD',
-                                       'CLASS_STAR', 'PM'])
+                                       'CLASS_STAR', 'PM', 'PMERR'])
     cat_df.to_csv('tmp_galaxies/galaxies_{}.csv'.format(idx_l))
 
 
