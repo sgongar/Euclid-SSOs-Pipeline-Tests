@@ -227,7 +227,7 @@ def create_catalog():
         ssos_list.append(ssos_)
 
     ssos_df = concat(ssos_list)
-    ssos_df.to_csv('catalogues_detected/scamp__ssos.csv')
+    ssos_df.to_csv('catalogues_detected/ssos.csv')
 
     return ssos_df
 
@@ -263,6 +263,9 @@ def create_ssos_catalog_thread(idx_l, sub_list, ssos_df, full_d):
                 index = check_distance(o_df, alpha, delta)
 
                 o_df = o_df.iloc[[index]]
+                print(o_df.columns)
+
+                raise Exception
 
                 idx_ = int(dither_df['IDX'].iloc[0])
                 cat_d['IDX'].append(idx_)
