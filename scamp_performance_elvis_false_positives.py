@@ -130,13 +130,17 @@ class FalsePositivesScampPerformance:
 
         # False positives dictionary
         self.false_positives = {1: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'CLASS': [], 'OBJECT': []},
+                                    'PM': [], 'PM_ERR': [], 'CLASS': [],
+                                    'OBJECT': []},
                                 2: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'CLASS': [], 'OBJECT': []},
+                                    'PM': [], 'PM_ERR': [], 'CLASS': [],
+                                    'OBJECT': []},
                                 3: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'CLASS': [], 'OBJECT': []},
+                                    'PM': [], 'PM_ERR': [], 'CLASS': [],
+                                    'OBJECT': []},
                                 4: {'RA': [], 'DEC': [], 'MAG': [],
-                                    'PM': [], 'CLASS': [], 'OBJECT': []}}
+                                    'PM': [], 'PM_ERR': [], 'CLASS': [],
+                                    'OBJECT': []}}
 
         self.save = True
 
@@ -198,6 +202,8 @@ class FalsePositivesScampPerformance:
             o_mag_bin = get_norm_mag(source_df['MEDIAN_MAG_ISO'].iloc[0])
             # Takes the first value of PM Series
             o_pm_norm = get_norm_speed(source_df['PM'].iloc[0])
+            # Takes the error of the proper motion calculation
+            o_pm_err = source_df['PM_ERR'].iloc[0]
             # Takes the median value of CLASS_STAR
             o_class_star = source_df['CLASS_STAR'].iloc[0]
 
@@ -216,9 +222,11 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['DEC'].append(delta)
                     self.false_positives[dither_n]['MAG'].append(o_mag_bin)
                     self.false_positives[dither_n]['PM'].append(o_pm_norm)
+                    self.false_positives[dither_n]['PM_ERR'].append(o_pm_err)
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    print(o_pm_norm, o_class_star, object_type)
+                    if object_type == 'galaxies':
+                        print(o_pm_norm, o_class_star, object_type)
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
 
         # Regions creation
@@ -247,6 +255,7 @@ class FalsePositivesScampPerformance:
         delta_total_list = []
         mag_total_list = []
         pm_total_list = []
+        pm_err_total_list = []
         class_total_list = []
         object_total_list = []
         for dither_ in self.false_positives.keys():
@@ -263,6 +272,9 @@ class FalsePositivesScampPerformance:
             pm_list = self.false_positives[dither_]['PM']
             for pm_ in pm_list:
                 pm_total_list.append(pm_)
+            pm_err_list = self.false_positives[dither_]['PM_ERR']
+            for pm_err_ in pm_err_list:
+                pm_err_total_list.append(pm_err_)
             class_list = self.false_positives[dither_]['CLASS']
             for class_ in class_list:
                 class_total_list.append(class_)
@@ -275,11 +287,12 @@ class FalsePositivesScampPerformance:
         delta_serie = Series(delta_total_list, name='DELTA_J2000')
         mag_serie = Series(mag_total_list, name='MAG_ISO')
         pm_serie = Series(pm_total_list, name='PM')
+        pm_err_serie = Series(pm_err_total_list, name='PM_ERR')
         class_serie = Series(class_total_list, name='CLASS_STAR')
         object_serie = Series(object_total_list, name='OBJECT')
 
         output = concat([dither_serie, alpha_serie, delta_serie,
-                         mag_serie, pm_serie, class_serie,
+                         mag_serie, pm_serie, pm_err_serie, class_serie,
                          object_serie], axis=1)
         for pm_ in [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]:
                 output_pm = output[output['PM'].isin([pm_])]

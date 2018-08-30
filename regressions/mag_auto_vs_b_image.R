@@ -1,5 +1,5 @@
 # Read CSV into R
-SSOsDataFrame <- read.csv(file="ssos_2_lower_24_5.csv", header=TRUE, sep=",")
+SSOsDataFrame <- read.csv(file="ssos_2_upper_24_5.csv", header=TRUE, sep=",")
 StarsDataFrame <- read.csv(file="scamp_stars.csv", header=TRUE, sep=",")
 
 library(MASS)
@@ -34,11 +34,11 @@ out <- ggplot(data = SSOsDataFrame, aes(x = MAG_AUTO, y = B_IMAGE)) +
 # print(out)
 
 # Ajuste hasta 24'5
-modelo_poli5 <- lm(B_IMAGE ~ poly(MAG_AUTO, 5, raw=TRUE), data = SSOsDataFrame)
+modelo_poli5 <- lm(B_IMAGE ~ poly(MAG_AUTO, 4, raw=TRUE), data = SSOsDataFrame)
 # print(summary(modelo_poli5))
 # print(modelo_poli5$coefficients)
 
-prediction.level <- 0.5
+prediction.level <- 0.6
 mpi <- cbind(SSOsDataFrame, predict(modelo_poli5, interval = "prediction", level = prediction.level))
 out_2 <- ggplot(mpi, aes(x = SSOsDataFrame$MAG_AUTO)) +
                 geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "gray", alpha = 0.5) +
@@ -57,8 +57,8 @@ fit_list <- out_matrix[, "fit"]
 lwr_list <- out_matrix[, "lwr"]
 upr_list <- out_matrix[, "upr"]
 
-upr_limit = lm(upr_list ~ poly(SSOsDataFrame$MAG_AUTO, 5, raw=TRUE))
+upr_limit = lm(upr_list ~ poly(SSOsDataFrame$MAG_AUTO, 4, raw=TRUE))
 # print(upr_limit$coefficients)
-lwr_limit = lm(lwr_list ~ poly(SSOsDataFrame$MAG_AUTO, 5, raw=TRUE))
+lwr_limit = lm(lwr_list ~ poly(SSOsDataFrame$MAG_AUTO, 4, raw=TRUE))
 print(lwr_limit$coefficients)
 # plot(SSOsDataFrame$MAG_AUTO, lwr_list)
