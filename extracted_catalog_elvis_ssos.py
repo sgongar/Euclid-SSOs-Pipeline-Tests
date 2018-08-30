@@ -26,7 +26,7 @@ from sys import stdout
 from astropy.units import degree
 from astropy.coordinates import SkyCoord
 from numpy import median, pi
-from pandas import concat, DataFrame, read_csv
+from pandas import concat, DataFrame, read_csv, Series
 
 from images_management_elvis import get_borders
 from misc_cats import extract_cats_d, create_full_cats, extract_ssos_df
@@ -238,9 +238,11 @@ def create_catalog():
             median_b_image_list.append(median_b_image)
             median_mag_auto_list.append(median_mag_auto)
 
-    print(ssos_df['IDX'].size)
-    print(len(median_b_image_list))
-    print(len(median_mag_auto_list))
+    ssos_df['MEDIAN_B_IMAGE'] = Series(median_b_image_list,
+                                       name='MEDIAN_B_IMAGE')
+    ssos_df['MEDIAN_MAG_AUTO'] = Series(median_mag_auto_list,
+                                        name='MEDIAN_MAG_AUTO')
+
     ssos_df.to_csv('catalogues_detected/ssos.csv')
 
     return ssos_df
