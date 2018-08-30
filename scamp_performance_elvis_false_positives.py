@@ -216,7 +216,7 @@ class FalsePositivesScampPerformance:
                 test_sso = check_source(input_df[dither_n]['SSOs'],
                                         alpha, delta, keys)
                 if test_sso.empty is not True:
-                    print('ok {}'.format(o_pm_norm/o_pm_norm))
+                    print('ok {}'.format(o_pm_norm/o_pm_err))
                 else:
                     self.false_positives[dither_n]['RA'].append(alpha)
                     self.false_positives[dither_n]['DEC'].append(delta)
@@ -229,7 +229,7 @@ class FalsePositivesScampPerformance:
                     if object_type == 'galaxies':
                         print(o_pm_norm, o_class_star, object_type)
                     """
-                    print('no {}'.format(o_pm_norm/o_pm_norm))
+                    print('no {}'.format(o_pm_norm/o_pm_err))
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
 
         # Regions creation
