@@ -203,6 +203,7 @@ class FalsePositivesScampPerformance:
             # Takes the first value of PM Series
             o_pm_norm = get_norm_speed(source_df['PM'].iloc[0])
             # Takes the error of the proper motion calculation
+            print(source_df.columns)
             o_pm_err = source_df['PM_ERR'].iloc[0]
             # Takes the median value of CLASS_STAR
             o_class_star = source_df['CLASS_STAR'].iloc[0]
