@@ -229,6 +229,8 @@ def create_catalog():
     ssos_df = concat(ssos_list)
 
     print(ssos_df.columns)
+    for source_ in list(set(ssos_df['SOURCE'].tolist())):
+        print(ssos_df[ssos_df['SOURCE'].isin([source_])])
     ssos_df.to_csv('catalogues_detected/ssos.csv')
 
     return ssos_df
