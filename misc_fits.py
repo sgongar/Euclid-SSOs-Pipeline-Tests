@@ -12,7 +12,7 @@ from os import listdir
 from astropy.io import fits
 from astropy.wcs import WCS
 
-from misc import extract_settings_elvis, extract_settings_luca
+from misc import extract_settings_elvis
 
 
 __author__ = "Samuel Góngora García"
@@ -24,28 +24,28 @@ __email__ = "sgongora@cab.inta-csic.es"
 __status__ = "Development"
 
 
-def get_fits_d(mag_, dither):
-    """ Returns a list with all fits files in the fits directory of a chosen
-    dither and magnitude bin.
-
-    :param mag_: The chosen magnitude bin.
-    :param dither: The chosen dither.
-    :return: A list with the fits files.
-    """
-    prfs_d = extract_settings_luca()
-    fits_list = []
-
-    files = listdir('{}/{}/CCDs/'.format(prfs_d['fits_dir'], mag_))
-    for file_ in files:
-        if file_[:1] == 'm' and file_[-5:] == '.fits':
-            fits_list.append(file_)
-
-    list_out = []
-    for file_ in fits_list:
-        if file_[-6:-5] == str(dither):
-            list_out.append(file_)
-
-    return list_out
+# def get_fits_d(mag_, dither):
+#     """ Returns a list with all fits files in the fits directory of a chosen
+#     dither and magnitude bin.
+#
+#     :param mag_: The chosen magnitude bin.
+#     :param dither: The chosen dither.
+#     :return: A list with the fits files.
+#     """
+#     prfs_d = extract_settings_luca()
+#     fits_list = []
+#
+#     files = listdir('{}/{}/CCDs/'.format(prfs_d['fits_dir'], mag_))
+#     for file_ in files:
+#         if file_[:1] == 'm' and file_[-5:] == '.fits':
+#             fits_list.append(file_)
+#
+#     list_out = []
+#     for file_ in fits_list:
+#         if file_[-6:-5] == str(dither):
+#             list_out.append(file_)
+#
+#     return list_out
 
 
 def get_fits(dither):
