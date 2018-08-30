@@ -227,6 +227,8 @@ def create_catalog():
         ssos_list.append(ssos_)
 
     ssos_df = concat(ssos_list)
+
+    print(ssos_df.columns)
     ssos_df.to_csv('catalogues_detected/ssos.csv')
 
     return ssos_df
