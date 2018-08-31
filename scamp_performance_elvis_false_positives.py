@@ -217,6 +217,20 @@ class FalsePositivesScampPerformance:
                                         alpha, delta, keys)
                 if test_sso.empty is not True:
                     print('ok {}'.format(o_pm_norm/o_pm_err))
+                    self.false_positives[dither_n]['SOURCE'].append(source_)
+                    self.false_positives[dither_n]['RA'].append(alpha)
+                    self.false_positives[dither_n]['DEC'].append(delta)
+                    self.false_positives[dither_n]['MAG'].append(o_mag_bin)
+                    self.false_positives[dither_n]['PM'].append(o_pm_norm)
+                    self.false_positives[dither_n]['PMERR'].append(o_pm_err)
+                    self.false_positives[dither_n]['CLASS'].append(o_class_star)
+                    object_type = get_object(alpha, delta, self.input_d)
+                    """
+                    if object_type == 'galaxies':
+                        print(o_pm_norm, o_class_star, object_type)
+                    """
+                    print('no {}'.format(o_pm_norm/o_pm_err))
+                    self.false_positives[dither_n]['OBJECT'].append(object_type)
                 else:
                     self.false_positives[dither_n]['SOURCE'].append(source_)
                     self.false_positives[dither_n]['RA'].append(alpha)

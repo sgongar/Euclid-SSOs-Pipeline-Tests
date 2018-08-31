@@ -1,5 +1,5 @@
 # Read CSV into R
-SSOsDataFrame <- read.csv(file="ssos_2_upper_24_5.csv", header=TRUE, sep=",")
+SSOsDataFrame <- read.csv(file="ssos_2_lower_24_5.csv", header=TRUE, sep=",")
 StarsDataFrame <- read.csv(file="scamp_stars.csv", header=TRUE, sep=",")
 
 library(MASS)
