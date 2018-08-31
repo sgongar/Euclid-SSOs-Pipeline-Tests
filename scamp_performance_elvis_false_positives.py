@@ -199,7 +199,7 @@ class FalsePositivesScampPerformance:
         for idx_source_, source_ in enumerate(unique_sources):
             source_df = filt_cat[filt_cat['SOURCE_NUMBER'].isin([source_])]
             # Takes the first value of MAG Series
-            o_mag_bin = get_norm_mag(source_df['MEDIAN_MAG_ISO'].iloc[0])
+            o_mag_bin = get_norm_mag(source_df['MEDIAN_MAG_AUTO'].iloc[0])
             # Takes the first value of PM Series
             o_pm_norm = get_norm_speed(source_df['PM'].iloc[0])
             # Takes the error of the proper motion calculation
@@ -254,7 +254,7 @@ class FalsePositivesScampPerformance:
             delta_list = self.false_positives[dither_]['DEC']
             delta_serie = Series(delta_list, name='DELTA_J2000')
             mag_list = self.false_positives[dither_]['MAG']
-            mag_serie = Series(mag_list, name='MAG_ISO')
+            mag_serie = Series(mag_list, name='MAG_AUTO')
             pm_list = self.false_positives[dither_]['PM']
             pm_serie = Series(pm_list, name='PM')
             object_list = self.false_positives[dither_]['OBJECT']
@@ -308,7 +308,7 @@ class FalsePositivesScampPerformance:
         dither_serie = Series(dither_total_list, name='DITHER')
         alpha_serie = Series(alpha_total_list, name='ALPHA_J2000')
         delta_serie = Series(delta_total_list, name='DELTA_J2000')
-        mag_serie = Series(mag_total_list, name='MAG_ISO')
+        mag_serie = Series(mag_total_list, name='MAG_AUTO')
         pm_serie = Series(pm_total_list, name='PM')
         pmerr_serie = Series(pmerr_total_list, name='PMERR')
         class_serie = Series(class_total_list, name='CLASS_STAR')
