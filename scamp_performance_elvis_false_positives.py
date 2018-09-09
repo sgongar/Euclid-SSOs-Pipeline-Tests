@@ -180,15 +180,11 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['RA'].append(alpha)
                     self.false_positives[dither_n]['DEC'].append(delta)
                     self.false_positives[dither_n]['MAG'].append(o_mag_bin)
-                    self.false_positives[dither_n]['PM'].append(o_pm_norm)
+                    i_pm_norm = get_norm_speed(float(test_sso['VEL'].iloc[0]))
+                    self.false_positives[dither_n]['PM'].append(i_pm_norm)
                     self.false_positives[dither_n]['PMERR'].append(o_pm_err)
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    i_pm_norm = get_norm_speed(float(test_sso['VEL'].iloc[0]))
-                    if float(i_pm_norm) != float(o_pm_norm):
-                        print('i_pm_norm {} - o_pm_norm {}'.format(i_pm_norm,
-                                                                   o_pm_norm))
-                    print(' ')
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
                 else:
                     self.false_positives[dither_n]['SOURCE'].append(source_)
@@ -199,8 +195,6 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['PMERR'].append(o_pm_err)
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    # print('no - o_mag_bin {} - o_pm_norm {}'.format(o_mag_bin,
-                    #                                                 o_pm_norm))
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
 
         # Regions creation
