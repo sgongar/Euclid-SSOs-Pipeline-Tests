@@ -35,7 +35,7 @@ class PlotFalseMovement:
         """
         """
         self.prfs_d = extract_settings_elvis()
-        self.read_catalog()
+        self.read_catalogue()
 
     def read_catalogue(self):
         """
@@ -43,6 +43,13 @@ class PlotFalseMovement:
         :return: catalogue
         """
         print(self.prfs_d)
+
+    def plot_movement_to_pdf(self):
+        """
+        """
+        for source_ in list(set(df['SOURCE'].tolist())):
+            source_df = df[df['SOURCE'].isin([source_])]
+            source_df.to_csv('{}.csv'.format(source_))
 
 
 if __name__ == "__main__":
