@@ -15,6 +15,8 @@ Todo:
 from astropy.io import fits
 from astropy.table import Table
 from pandas import concat, read_csv, Series
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 
 from misc import extract_settings_elvis, check_source, setting_logger
 from misc import get_norm_mag, get_norm_speed
@@ -56,14 +58,22 @@ class PlotFalseMovement:
         for pm_ in self.prfs_d['pms']:
             for mag_ in self.mags:
                 pdf_name = '{}_{}.pdf'.format(pm_, mag_)
-                cat = self.cats_d[pm_]
-                cat = cat[cat['MAG_AUTO'].isin([mag_])]
+                # Creates pdf
+                with PdfPages(pdf_name) as pdf:
+                    cat = self.cats_d[pm_]
+                    cat = cat[cat['MAG_AUTO'].isin([mag_])]
 
-                unique_sources = list(set(cat['SOURCE'].tolist()))
-                for source_ in unique_sources:
-                    source_df = cat[cat['SOURCE'].isin([source_])]
-                    print(source_df)
-                #  with PdfPages(pdf_name) as pdf:
+                    unique_sources = list(set(cat['SOURCE'].tolist()))
+                    for source_ in unique_sources:
+                        fig = plt.figure(figsize=(16.53, 11.69), dpi=100)
+                        ax = fig.add_subplot(1, 1, 1)
+
+                        source_df = cat[cat['SOURCE'].isin([source_])]
+                        ax.plot(source_df['ALPHA_J2000'].tolist(),
+                                source_df['DELTA_J2000'].tolist(), 'bs')
+
+                        pdf.savefig()
+
     #     for source_ in list(set(df['SOURCE'].tolist())):
     #         source_df = df[df['SOURCE'].isin([source_])]
     #         source_df.to_csv('{}.csv'.format(source_))
