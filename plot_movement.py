@@ -36,21 +36,30 @@ class PlotFalseMovement:
         """
         self.cats_d = {}
         self.prfs_d = extract_settings_elvis()
-        self.read_catalogue()
+        self.mags = ['20-21', '21-22', '22-23', '23-24', '24-25', '25-26']
 
-        print(self.cats_d)
+        self.create_catalogue_dict()
+        self.plot_movement_to_pdf()
 
-    def read_catalogue(self):
+    def create_catalogue_dict(self):
         """
 
         :return: catalogue
         """
         for pm_ in self.prfs_d['pms']:
-            self.cats_d[pm_] = read_csv('false_positives/false_{}.csv'.format(pm_))
+            dir_ = 'false_positives/false_{}.csv'.format(pm_)
+            self.cats_d[pm_] = read_csv(dir_, index_col=0)
 
-    # def plot_movement_to_pdf(self):
-    #     """
-    #     """
+    def plot_movement_to_pdf(self):
+        """
+        """
+        for pm_ in self.prfs_d['pms']:
+            for mag_ in self.mags:
+                pdf_name = '{}_{}.pdf'.format(pm_, mag_)
+                catalogue = self.cats_d[pm_]
+                catalogue = catalogue[catalogue['MAG'].isin([mag_])]
+                print(catalogue)
+                #  with PdfPages(pdf_name) as pdf:
     #     for source_ in list(set(df['SOURCE'].tolist())):
     #         source_df = df[df['SOURCE'].isin([source_])]
     #         source_df.to_csv('{}.csv'.format(source_))
