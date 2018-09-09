@@ -185,8 +185,9 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
                     i_pm_norm = get_norm_speed(float(test_sso['VEL'].iloc[0]))
-                    print('i_pm_norm {} - o_pm_norm {}'.format(i_pm_norm,
-                                                               o_pm_norm))
+                    if float(i_pm_norm) != float(o_pm_norm):
+                        print('i_pm_norm {} - o_pm_norm {}'.format(i_pm_norm,
+                                                                   o_pm_norm))
                     print(' ')
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
                 else:
