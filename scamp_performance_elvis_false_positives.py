@@ -186,6 +186,8 @@ class FalsePositivesScampPerformance:
                     object_type = get_object(alpha, delta, self.input_d)
                     print('ok - o_mag_bin {} - o_pm_norm {}'.format(o_mag_bin,
                                                                     o_pm_norm))
+                    print(test_sso.columns)
+                    print(' ')
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
                 else:
                     self.false_positives[dither_n]['SOURCE'].append(source_)
@@ -196,8 +198,8 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['PMERR'].append(o_pm_err)
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    print('no - o_mag_bin {} - o_pm_norm {}'.format(o_mag_bin,
-                                                                    o_pm_norm))
+                    # print('no - o_mag_bin {} - o_pm_norm {}'.format(o_mag_bin,
+                    #                                                 o_pm_norm))
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
 
         # Regions creation
