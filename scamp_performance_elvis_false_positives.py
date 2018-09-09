@@ -229,7 +229,7 @@ class FalsePositivesScampPerformance:
                                                                     dither_)
                 output_pm.to_csv(cat_name, index=False, header=False, sep=" ")
 
-        # Catalogue creation
+        # Catalogue creation for false sources
         source_total_list = []
         dither_total_list = []
         alpha_total_list = []
@@ -239,8 +239,8 @@ class FalsePositivesScampPerformance:
         pmerr_total_list = []
         class_total_list = []
         object_total_list = []
-        print(self.false_positives.keys())
-        for dither_ in self.false_positives.keys():
+        dither_list = [1, 2, 3, 4]
+        for dither_ in dither_list:
             alpha_list = self.false_positives[dither_]['RA']
             for alpha_ in alpha_list:
                 dither_total_list.append(dither_)
@@ -281,9 +281,65 @@ class FalsePositivesScampPerformance:
                          mag_serie, pm_serie, pmerr_serie, class_serie,
                          object_serie], axis=1)
         for pm_ in [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]:
-                output_pm = output[output['PM'].isin([pm_])]
-                cat_name = 'false_positives/false_{}.csv'.format(pm_)
-                output_pm.to_csv(cat_name)
+            output_pm = output[output['PM'].isin([pm_])]
+            cat_name = 'false_positives/false_{}.csv'.format(pm_)
+            output_pm.to_csv(cat_name)
+
+        # Catalogue creation for right sources
+        source_total_list = []
+        dither_total_list = []
+        alpha_total_list = []
+        delta_total_list = []
+        mag_total_list = []
+        pm_total_list = []
+        pmerr_total_list = []
+        class_total_list = []
+        object_total_list = []
+        dither_list = [1, 2, 3, 4]
+        for dither_ in dither_list:
+            alpha_list = self.right_positives[dither_]['RA']
+            for alpha_ in alpha_list:
+                dither_total_list.append(dither_)
+                alpha_total_list.append(alpha_)
+            delta_list = self.right_positives[dither_]['DEC']
+            for delta_ in delta_list:
+                delta_total_list.append(delta_)
+            source_list = self.right_positives[dither_]['SOURCE']
+            for source_ in source_list:
+                source_total_list.append(source_)
+            mag_list = self.right_positives[dither_]['MAG']
+            for mag_ in mag_list:
+                mag_total_list.append(mag_)
+            pm_list = self.right_positives[dither_]['PM']
+            for pm_ in pm_list:
+                pm_total_list.append(pm_)
+            pmerr_list = self.right_positives[dither_]['PMERR']
+            for pmerr_ in pmerr_list:
+                pmerr_total_list.append(pmerr_)
+            class_list = self.right_positives[dither_]['CLASS']
+            for class_ in class_list:
+                class_total_list.append(class_)
+            object_list = self.right_positives[dither_]['OBJECT']
+            for object_ in object_list:
+                object_total_list.append(object_)
+
+        source_serie = Series(source_total_list, name='SOURCE')
+        dither_serie = Series(dither_total_list, name='DITHER')
+        alpha_serie = Series(alpha_total_list, name='ALPHA_J2000')
+        delta_serie = Series(delta_total_list, name='DELTA_J2000')
+        mag_serie = Series(mag_total_list, name='MAG_AUTO')
+        pm_serie = Series(pm_total_list, name='PM')
+        pmerr_serie = Series(pmerr_total_list, name='PMERR')
+        class_serie = Series(class_total_list, name='CLASS_STAR')
+        object_serie = Series(object_total_list, name='OBJECT')
+
+        output = concat([source_serie, dither_serie, alpha_serie, delta_serie,
+                         mag_serie, pm_serie, pmerr_serie, class_serie,
+                         object_serie], axis=1)
+        for pm_ in [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]:
+            output_pm = output[output['PM'].isin([pm_])]
+            cat_name = 'false_positives/right_{}.csv'.format(pm_)
+            output_pm.to_csv(cat_name)
 
 
 if __name__ == "__main__":
