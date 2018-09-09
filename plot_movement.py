@@ -34,22 +34,26 @@ class PlotFalseMovement:
     def __init__(self):
         """
         """
+        self.cats_d = {}
         self.prfs_d = extract_settings_elvis()
         self.read_catalogue()
+
+        print(self.cats_d)
 
     def read_catalogue(self):
         """
 
         :return: catalogue
         """
-        print(self.prfs_d)
+        for pm_ in self.prfs_d['pms']:
+            self.cats_d[pm_] = read_csv('false_positives/false_{}.csv'.format(pm_))
 
-    def plot_movement_to_pdf(self):
-        """
-        """
-        for source_ in list(set(df['SOURCE'].tolist())):
-            source_df = df[df['SOURCE'].isin([source_])]
-            source_df.to_csv('{}.csv'.format(source_))
+    # def plot_movement_to_pdf(self):
+    #     """
+    #     """
+    #     for source_ in list(set(df['SOURCE'].tolist())):
+    #         source_df = df[df['SOURCE'].isin([source_])]
+    #         source_df.to_csv('{}.csv'.format(source_))
 
 
 if __name__ == "__main__":
