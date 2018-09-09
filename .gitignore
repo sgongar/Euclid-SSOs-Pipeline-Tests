@@ -28,3 +28,6 @@ stats*
 .idea/*
 
 regressions/.Rhistory
+
+false_positives/*.csv
+false_positives/*.reg

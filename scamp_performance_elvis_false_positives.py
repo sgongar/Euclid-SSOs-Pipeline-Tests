@@ -102,6 +102,18 @@ class FalsePositivesScampPerformance:
                                     'MAG': [], 'PM': [], 'PMERR': [],
                                     'CLASS': [], 'OBJECT': []}}
 
+        self.right_positives = {1: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []},
+                                2: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []},
+                                3: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []},
+                                4: {'SOURCE': [], 'RA': [], 'DEC': [],
+                                    'MAG': [], 'PM': [], 'PMERR': [],
+                                    'CLASS': [], 'OBJECT': []}}
         self.save = True
 
         logger_name = 'scamp_performance'  # Set as desired
@@ -176,16 +188,16 @@ class FalsePositivesScampPerformance:
                 test_sso = check_source(input_df[dither_n]['SSOs'],
                                         alpha, delta, keys)
                 if test_sso.empty is not True:
-                    self.false_positives[dither_n]['SOURCE'].append(source_)
-                    self.false_positives[dither_n]['RA'].append(alpha)
-                    self.false_positives[dither_n]['DEC'].append(delta)
-                    self.false_positives[dither_n]['MAG'].append(o_mag_bin)
+                    self.right_positives[dither_n]['SOURCE'].append(source_)
+                    self.right_positives[dither_n]['RA'].append(alpha)
+                    self.right_positives[dither_n]['DEC'].append(delta)
+                    self.right_positives[dither_n]['MAG'].append(o_mag_bin)
                     i_pm_norm = get_norm_speed(float(test_sso['VEL'].iloc[0]))
-                    self.false_positives[dither_n]['PM'].append(i_pm_norm)
-                    self.false_positives[dither_n]['PMERR'].append(o_pm_err)
-                    self.false_positives[dither_n]['CLASS'].append(o_class_star)
+                    self.right_positives[dither_n]['PM'].append(i_pm_norm)
+                    self.right_positives[dither_n]['PMERR'].append(o_pm_err)
+                    self.right_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    self.false_positives[dither_n]['OBJECT'].append(object_type)
+                    self.right_positives[dither_n]['OBJECT'].append(object_type)
                 else:
                     self.false_positives[dither_n]['SOURCE'].append(source_)
                     self.false_positives[dither_n]['RA'].append(alpha)
@@ -227,6 +239,7 @@ class FalsePositivesScampPerformance:
         pmerr_total_list = []
         class_total_list = []
         object_total_list = []
+        print(self.false_positives.keys())
         for dither_ in self.false_positives.keys():
             alpha_list = self.false_positives[dither_]['RA']
             for alpha_ in alpha_list:
