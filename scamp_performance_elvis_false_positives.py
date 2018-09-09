@@ -186,7 +186,7 @@ class FalsePositivesScampPerformance:
                     object_type = get_object(alpha, delta, self.input_d)
                     print('ok - o_mag_bin {} - o_pm_norm {}'.format(o_mag_bin,
                                                                     o_pm_norm))
-                    print(test_sso.columns)
+                    print(test_sso['VEL'].iloc[0])
                     print(' ')
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
                 else:
