@@ -15,7 +15,7 @@ Todo:
 """
 
 from misc import extract_settings_elvis, check_source, setting_logger
-from misc import get_norm_speed
+from misc import get_norm_speed, get_norm_mag
 from misc_cats import gets_data
 
 from numpy import nan
@@ -153,25 +153,6 @@ def get_dither(catalog_n):
             dither_n = dither_
 
     return dither_n
-
-
-
-def get_norm_mag(o_mag):
-    """
-
-    :param o_mag:
-    :return: mag_bin
-    """
-    mags = [[11, 12], [12, 13], [13, 14], [14, 15], [15, 16], [16, 17],
-            [17, 18], [18, 19], [19, 20], [20, 21], [21, 22], [22, 23],
-            [23, 24], [24, 25], [25, 26], [26, 27], [27, 28], [28, 29]]
-
-    mag_bin = ''
-    for mag_ in mags:
-        if mag_[0] < o_mag < mag_[1]:
-            mag_bin = '{}-{}'.format(mag_[0], mag_[1])
-
-    return mag_bin
 
 
 def splits_by_mag_bin():

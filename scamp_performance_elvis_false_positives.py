@@ -17,6 +17,7 @@ from astropy.table import Table
 from pandas import concat, read_csv, Series
 
 from misc import extract_settings_elvis, check_source, setting_logger
+from misc import get_norm_mag, get_norm_speed
 from misc_cats import get_dither
 
 
@@ -54,47 +55,6 @@ def extract_inputs_d():
     inputs_d['galaxies'] = galaxies_df
 
     return inputs_d
-
-
-def get_norm_speed(o_pm):
-    """
-
-    :return:
-    """
-    speeds_d = {0.01: [0.005, 0.015], 0.03: [0.015, 0.05],
-                0.1: [0.05, 0.15], 0.3: [0.15, 0.5],
-                1.0: [0.5, 1.5], 3.0: [1.5, 5],
-                10.0: [5.0, 15.0], 30.0: [15.0, 50]}
-
-    if o_pm < 0.005:
-        pm_norm = 0
-    else:
-        # pm_norm = 0
-        for key_ in speeds_d.keys():
-            low = speeds_d[key_][0]
-            high = speeds_d[key_][1]
-            if low < o_pm <= high:
-                pm_norm = key_
-
-    return pm_norm
-
-
-def get_norm_mag(o_mag):
-    """
-
-    :param o_mag:
-    :return: mag_bin
-    """
-    mags = [[14, 15], [15, 16], [16, 17], [17, 18], [18, 19], [19, 20],
-            [20, 21], [21, 22], [22, 23], [23, 24], [24, 25], [25, 26],
-            [26, 27], [27, 28]]
-
-    mag_bin = ''
-    for mag_ in mags:
-        if mag_[0] < o_mag < mag_[1]:
-            mag_bin = '{}-{}'.format(mag_[0], mag_[1])
-
-    return mag_bin
 
 
 def get_object(alpha, delta, input_d):
@@ -225,10 +185,6 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['PMERR'].append(o_pm_err)
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    """
-                    if object_type == 'galaxies':
-                        print(o_pm_norm, o_class_star, object_type)
-                    """
                     print('no {}'.format(o_pm_norm/o_pm_err))
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
                 else:
@@ -240,10 +196,6 @@ class FalsePositivesScampPerformance:
                     self.false_positives[dither_n]['PMERR'].append(o_pm_err)
                     self.false_positives[dither_n]['CLASS'].append(o_class_star)
                     object_type = get_object(alpha, delta, self.input_d)
-                    """
-                    if object_type == 'galaxies':
-                        print(o_pm_norm, o_class_star, object_type)
-                    """
                     print('no {}'.format(o_pm_norm/o_pm_err))
                     self.false_positives[dither_n]['OBJECT'].append(object_type)
 
