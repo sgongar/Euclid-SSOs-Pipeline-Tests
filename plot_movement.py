@@ -56,9 +56,13 @@ class PlotFalseMovement:
         for pm_ in self.prfs_d['pms']:
             for mag_ in self.mags:
                 pdf_name = '{}_{}.pdf'.format(pm_, mag_)
-                catalogue = self.cats_d[pm_]
-                catalogue = catalogue[catalogue['MAG_AUTO'].isin([mag_])]
-                print(catalogue)
+                cat = self.cats_d[pm_]
+                cat = cat[cat['MAG_AUTO'].isin([mag_])]
+
+                unique_sources = list(set(cat['SOURCE'].tolist()))
+                for source_ in unique_sources:
+                    source_df = cat[cat['SOURCE'].isin([source_])]
+                    print(source_df)
                 #  with PdfPages(pdf_name) as pdf:
     #     for source_ in list(set(df['SOURCE'].tolist())):
     #         source_df = df[df['SOURCE'].isin([source_])]
