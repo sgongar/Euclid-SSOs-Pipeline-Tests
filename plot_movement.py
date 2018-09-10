@@ -165,12 +165,24 @@ class PlotFalseMovement:
                             ax.scatter(alpha_list_seconds[idx],
                                        delta_list_seconds[idx],
                                        c=colors[idx], label=dithers[idx], s=36)
+
+                        for idx, txt in enumerate(dithers):
+                            ax.annotate(txt, (alpha_list_seconds[idx],
+                                              delta_list_seconds[idx]))
+
                         # Test
                         if len(alpha_list_seconds) == 3:
                             ax.plot(alpha_list_seconds[:2],
                                     delta_list_seconds[:2])
                             ax.plot(alpha_list_seconds[1:3],
                                     delta_list_seconds[1:3])
+                        elif len(alpha_list_seconds) == 3:
+                            ax.plot(alpha_list_seconds[:2],
+                                    delta_list_seconds[:2])
+                            ax.plot(alpha_list_seconds[1:3],
+                                    delta_list_seconds[1:3])
+                            ax.plot(alpha_list_seconds[2:4],
+                                    delta_list_seconds[2:4])
 
                         ax.set_xticks(x_ticks['major_t'], minor=False)
                         ax.set_xticklabels(x_ticks_label['major_t'])
