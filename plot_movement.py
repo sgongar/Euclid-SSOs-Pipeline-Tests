@@ -168,6 +168,7 @@ class PlotFalseMovement:
                         # Test
 
                         if len(alpha_list_seconds) == 3:
+                            print(alpha_list_seconds[:1])
                             ax.arrow(float(alpha_list_seconds[:1]),
                                      float(delta_list_seconds[:1]),
                                      float(alpha_list_seconds[1:2]),
