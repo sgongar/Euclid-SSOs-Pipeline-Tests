@@ -33,8 +33,8 @@ class PlotFalseMovement:
         """
         """
         self.cats_d = {}
-        # self.pms = [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]
-        self.pms = [0.1]
+        self.pms = [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0]
+        # self.pms = [0.1]
         self.mags = ['20-21', '21-22', '22-23', '23-24', '24-25', '25-26']
 
         self.create_catalogue_dict()
