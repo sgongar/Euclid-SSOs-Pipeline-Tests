@@ -167,13 +167,16 @@ class PlotFalseMovement:
                                        c=colors[idx], label=dithers[idx], s=36)
                         # Test
 
+                        print(float(alpha_list_seconds[:1][0]),
+                              float(delta_list_seconds[:1][0]),
+                              float(alpha_list_seconds[1:2][0]),
+                              float(delta_list_seconds[1:2][0]))
+
                         if len(alpha_list_seconds) == 3:
                             ax.arrow(float(alpha_list_seconds[:1][0]),
                                      float(delta_list_seconds[:1][0]),
                                      float(alpha_list_seconds[1:2][0]),
-                                     float(delta_list_seconds[1:2][0]),
-                                     head_width=0.05,
-                                     head_length=0.1, fc='k', ec='k')
+                                     float(delta_list_seconds[1:2][0]))
                             """
                             ax.arrow(alpha_list_seconds[1:2],
                                      delta_list_seconds[1:2],
