@@ -169,8 +169,8 @@ class PlotFalseMovement:
                         for idx, txt in enumerate(dithers):
                             ax.annotate(txt, (alpha_list_seconds[idx],
                                               delta_list_seconds[idx]),
-                                        xytext=(alpha_list_seconds[idx] + 0.02,
-                                                delta_list_seconds[idx] + 0.02))
+                                        xytext=(alpha_list_seconds[idx] + 0.0002,
+                                                delta_list_seconds[idx] + 0.0002))
 
                         # Test
                         if len(alpha_list_seconds) == 3:
