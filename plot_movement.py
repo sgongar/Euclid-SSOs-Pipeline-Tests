@@ -164,7 +164,8 @@ class PlotFalseMovement:
                     for idx in range(0, len(alpha_list_seconds), 1):
                         ax.scatter(alpha_list_seconds[idx],
                                    delta_list_seconds[idx],
-                                   c=colors[idx], label=dithers[idx], s=36)
+                                   c=colors[idx],
+                                   label='dither_{}'.format(dithers[idx]), s=36)
 
                     for idx, txt in enumerate(dithers):
                         ax.annotate(txt, (alpha_list_seconds[idx],
@@ -174,8 +175,9 @@ class PlotFalseMovement:
 
                     # Test
                     if len(alpha_list_seconds) == 3:
+
                         ax.plot(alpha_list_seconds[:2],
-                                delta_list_seconds[:2], label='test')
+                                delta_list_seconds[:2])
                         ax.plot(alpha_list_seconds[1:3],
                                 delta_list_seconds[1:3])
                         ax.plot([alpha_list_seconds[0],
@@ -276,13 +278,13 @@ class PlotFalseMovement:
                         idx_alpha += 1
 
                     x_ticks['minor_t'] = []
-                    x_ticks['minor_t'].append(min_alpha - 0.0015)
+                    x_ticks['minor_t'].append(min_alpha - 0.01)
                     x_ticks['minor_t'].append(min_alpha)
 
                     idx_alpha = 1
                     alpha_step = min_alpha
                     while alpha_step < max_alpha:
-                        alpha_step = min_alpha + idx_alpha * 0.0015
+                        alpha_step = min_alpha + idx_alpha * 0.01
                         x_ticks['minor_t'].append(alpha_step)
                         idx_alpha += 1
 
@@ -312,12 +314,12 @@ class PlotFalseMovement:
                         idx_delta += 1
 
                     y_ticks['minor_t'] = []
-                    y_ticks['minor_t'].append(min_delta - 0.0015)
+                    y_ticks['minor_t'].append(min_delta - 0.01)
                     y_ticks['minor_t'].append(min_delta)
                     idx_delta = 1
                     delta_step = min_delta
                     while delta_step < max_delta:
-                        delta_step = min_delta + idx_delta * 0.0015
+                        delta_step = min_delta + idx_delta * 0.01
                         y_ticks['minor_t'].append(delta_step)
                         idx_delta += 1
 
