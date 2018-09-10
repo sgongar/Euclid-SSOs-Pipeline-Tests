@@ -138,6 +138,7 @@ class PlotFalseMovement:
                         y_ticks['major_t'].append(min_delta)
                         y_second_label = min_delta - int(min_delta)
                         y_second_label = float("{0:.3f}".format(y_second_label))
+                        y_ticks_label['major_t'].append(y_second_label)
 
                         idx_delta = 1
                         delta_step = min_delta
@@ -164,6 +165,8 @@ class PlotFalseMovement:
                             ax.scatter(alpha_list_seconds[idx],
                                        delta_list_seconds[idx],
                                        c=colors[idx], label=dithers[idx], s=36)
+                        # Test
+                        ax.plot(alpha_list_seconds[:2], delta_list_seconds[:2])
 
                         ax.set_xticks(x_ticks['major_t'], minor=False)
                         ax.set_xticklabels(x_ticks_label['major_t'])
