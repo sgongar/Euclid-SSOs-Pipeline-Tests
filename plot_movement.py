@@ -35,7 +35,7 @@ class PlotFalseMovement:
         self.cats_d = {}
         self.pms = [0.1, 0.3]
         # self.pms = [0.1]
-        self.mags = ['20-21', '21-22', '22-23', '23-24', '24-25', '25-26']
+        self.mags = ['20-21', '21-22']
 
         self.create_catalogue_dict()
         self.plot_movement_to_pdf()
