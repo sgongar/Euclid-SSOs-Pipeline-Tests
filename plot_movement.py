@@ -178,6 +178,10 @@ class PlotFalseMovement:
                                     delta_list_seconds[:2])
                             ax.plot(alpha_list_seconds[1:3],
                                     delta_list_seconds[1:3])
+                            ax.plot([alpha_list_seconds[0],
+                                     alpha_list_seconds[2]],
+                                    [delta_list_seconds[0],
+                                     delta_list_seconds[2]], linestyle='--')
                         elif len(alpha_list_seconds) == 4:
                             ax.plot(alpha_list_seconds[:2],
                                     delta_list_seconds[:2])
@@ -185,6 +189,10 @@ class PlotFalseMovement:
                                     delta_list_seconds[1:3])
                             ax.plot(alpha_list_seconds[2:4],
                                     delta_list_seconds[2:4])
+                            ax.plot([alpha_list_seconds[0],
+                                     alpha_list_seconds[3]],
+                                    [delta_list_seconds[0],
+                                     delta_list_seconds[3]], linestyle='--')
 
                         ax.set_xticks(x_ticks['major_t'], minor=False)
                         ax.set_xticklabels(x_ticks_label['major_t'])
