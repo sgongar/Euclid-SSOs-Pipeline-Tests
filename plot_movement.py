@@ -328,7 +328,8 @@ class PlotFalseMovement:
                     for idx in range(0, len(alpha_list_seconds), 1):
                         ax.scatter(alpha_list_seconds[idx],
                                    delta_list_seconds[idx],
-                                   c=colors[idx], label=dithers[idx], s=36)
+                                   c=colors[idx],
+                                   label='dither_{}'.format(dithers[idx]), s=36)
 
                     for idx, txt in enumerate(dithers):
                         ax.annotate(txt, (alpha_list_seconds[idx],
