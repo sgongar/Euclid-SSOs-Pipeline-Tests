@@ -166,24 +166,12 @@ class PlotFalseMovement:
                                        delta_list_seconds[idx],
                                        c=colors[idx], label=dithers[idx], s=36)
                         # Test
-
-                        print(float(alpha_list_seconds[:1][0]),
-                              float(delta_list_seconds[:1][0]),
-                              float(alpha_list_seconds[1:2][0]),
-                              float(delta_list_seconds[1:2][0]))
-
                         if len(alpha_list_seconds) == 3:
-                            ax.arrow(float(alpha_list_seconds[:1][0]),
-                                     float(delta_list_seconds[:1][0]),
-                                     float(alpha_list_seconds[1:2][0]),
-                                     float(delta_list_seconds[1:2][0]))
-                            """
-                            ax.arrow(alpha_list_seconds[1:2],
-                                     delta_list_seconds[1:2],
-                                     alpha_list_seconds[2:3],
-                                     delta_list_seconds[2:3], head_width=0.05,
-                                     head_length=0.1, fc='k', ec='k')
-                            """
+                            ax.plot(alpha_list_seconds[:2],
+                                    delta_list_seconds[:2])
+                            ax.plot(alpha_list_seconds[1:3],
+                                    delta_list_seconds[1:3])
+
                         ax.set_xticks(x_ticks['major_t'], minor=False)
                         ax.set_xticklabels(x_ticks_label['major_t'])
                         ax.set_xticks(x_ticks['minor_t'], minor=True)
