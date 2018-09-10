@@ -46,7 +46,7 @@ class PlotFalseMovement:
         :return: catalogue
         """
         for pm_ in self.pms:
-            dir_ = 'false_positives/false_{}.csv'.format(pm_)
+            dir_ = 'false_positives/right_{}.csv'.format(pm_)
             self.cats_d[pm_] = read_csv(dir_, index_col=0)
 
     def plot_movement_to_pdf(self):
@@ -54,7 +54,7 @@ class PlotFalseMovement:
         """
         for pm_ in self.pms:
             for mag_ in self.mags:
-                pdf_name = '{}_{}_{}.pdf'.format('false', pm_, mag_)
+                pdf_name = '{}_{}_{}.pdf'.format('right', pm_, mag_)
                 # Creates pdf
                 with PdfPages(pdf_name) as pdf:
                     cat = self.cats_d[pm_]
