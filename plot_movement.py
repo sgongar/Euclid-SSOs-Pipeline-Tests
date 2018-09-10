@@ -177,7 +177,7 @@ class PlotFalseMovement:
                         ax.set_xticks(x_ticks['minor_t'], minor=True)
 
                         ax.set_yticks(y_ticks['major_t'], minor=False)
-                        ax.set_yticklabels(x_ticks_label['major_t'])
+                        ax.set_yticklabels(y_ticks_label['major_t'])
                         ax.set_yticks(y_ticks['minor_t'], minor=True)
 
                         # Formats grids
