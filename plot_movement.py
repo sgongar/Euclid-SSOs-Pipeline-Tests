@@ -175,7 +175,7 @@ class PlotFalseMovement:
                     # Test
                     if len(alpha_list_seconds) == 3:
                         ax.plot(alpha_list_seconds[:2],
-                                delta_list_seconds[:2])
+                                delta_list_seconds[:2], label='test')
                         ax.plot(alpha_list_seconds[1:3],
                                 delta_list_seconds[1:3])
                         ax.plot([alpha_list_seconds[0],
