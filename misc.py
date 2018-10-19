@@ -224,7 +224,7 @@ def get_os():
 
     if 'fedora-23' in platform.platform():
         os_system = 'test'
-    elif 'Debian' in platform.platform():
+    elif 'debian' in platform.platform():
         os_system = 'debian'
     elif 'Ubuntu' in platform.platform():
         os_system = 'ubuntu'
