@@ -1,4 +1,4 @@
- #!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """
@@ -190,7 +190,6 @@ def create_scamp_dict(conf_num):
     return scamp_dict, len_conf
 
 
-
 def setting_logger(prfs_d, logger_name):
     """ sets-up a logger object ready to be used
 
@@ -217,19 +216,26 @@ def setting_logger(prfs_d, logger_name):
 
 
 def get_os():
-    """ A function that gets the current operating system for now works in
-    Fedora and CentOS.
+    """ a function that gets the current operative system
+    for now works in Debian, Fedora and Ubuntu shell (Microsoft version)
 
     @return os_system: a string which contains the operative system name
     """
-    if 'fedora-19' in platform.platform() or 'fedora-27' in platform.platform():
+
+    if 'fedora-23' in platform.platform():
+        os_system = 'test'
+    elif 'Debian' in platform.platform():
+        os_system = 'debian'
+    elif 'Ubuntu' in platform.platform():
+        os_system = 'ubuntu'
+    elif 'fedora-26' in platform.platform():
+        os_system = 'fedora'
+    elif 'fedora-19' in platform.platform():
         os_system = 'cab'
     elif 'centos' in platform.platform():
         os_system = 'centos'
-    elif 'wrongOS' in platform.platform():
-        raise WrongOS
     else:
-        raise Exception
+        raise WrongOS
 
     return os_system
 
@@ -269,15 +275,16 @@ def extract_settings_elvis():
 
     if os_version == 'centos':
         prfs_d['version'] = conf_map(cf, "Version")['centos_version']
-    elif os_version == 'cab':
-        prfs_d['version'] = conf_map(cf, "Version")['cab_version']
-    else:
-        raise BadSettings('Operative system not chosen')
-
-    if os_version == 'centos':
         prfs_d['home'] = conf_map(cf, "HomeDirs")['centos_home']
     elif os_version == 'cab':
+        prfs_d['version'] = conf_map(cf, "Version")['cab_version']
         prfs_d['home'] = conf_map(cf, "HomeDirs")['cab_home']
+    elif os_version == 'ubuntu':
+        prfs_d['version'] = conf_map(cf, "Version")['ubuntu_version']
+        prfs_d['home'] = conf_map(cf, "HomeDirs")['ubuntu_home']
+    elif os_version == 'debian':
+        prfs_d['version'] = conf_map(cf, "Version")['debian_version']
+        prfs_d['home'] = conf_map(cf, "HomeDirs")['debian_home']
     else:
         raise BadSettings('Operative system not chosen')
 
